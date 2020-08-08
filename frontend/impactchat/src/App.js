@@ -6,6 +6,8 @@ import Brightness4Icon from '@material-ui/icons/Brightness4';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 
+import { Switch, Route, BrowserRouter } from "react-router-dom";
+
 import Login from './components/loginPage'
 
 import lightTheme from './themes/light-theme.js';
@@ -32,15 +34,16 @@ class App extends React.Component {
 
   render() {
       return (
-        <MuiThemeProvider theme={this.state.theme()}>
-          <CssBaseline/>
-          <ToggleDarkMode toggle={this.toggleDarkMode}/>
-          <Login />
-          <div className="App">
-            <p>Hello, World</p>
-            {/* <Login /> */}
-          </div>
-        </MuiThemeProvider>
+        <BrowserRouter>
+          <MuiThemeProvider theme={this.state.theme()}>
+            <CssBaseline/>
+            <ToggleDarkMode toggle={this.toggleDarkMode}/>
+            <Switch>
+                    <Route exact path={"/"} render={() => <Login  />} />
+                    <Route exact path={"/example"} render={() => <Brightness4Icon  />} />
+            </Switch>
+          </MuiThemeProvider>
+        </BrowserRouter>
     );
   }
 }
