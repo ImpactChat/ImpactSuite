@@ -1,14 +1,12 @@
 import React from 'react';
 
-import IconButton from '@material-ui/core/IconButton';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
 
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 
-import Login from './components/loginPage'
+import Login from './pages/login';
 
 import lightTheme from './themes/light-theme.js';
 import darkTheme from './themes/dark-theme.js';
@@ -37,10 +35,9 @@ class App extends React.Component {
         <BrowserRouter>
           <MuiThemeProvider theme={this.state.theme()}>
             <CssBaseline/>
-            <ToggleDarkMode toggle={this.toggleDarkMode}/>
             <Switch>
-                    <Route exact path={"/"} render={() => <Login  />} />
-                    <Route exact path={"/example"} render={() => <Brightness4Icon  />} />
+                    <Route exact path={"/"} render={() => <Login toggle={this.toggleDarkMode} />} />
+                    <Route exact path={"/example"} render={() => <p>Hi</p>} />
             </Switch>
           </MuiThemeProvider>
         </BrowserRouter>
@@ -50,13 +47,13 @@ class App extends React.Component {
 
 
 
-class ToggleDarkMode extends React.Component {
-    render() {
-        return (
-            <IconButton onClick={this.props.toggle} aria-label="toggleDarkMode">
-                <Brightness4Icon fontSize="large" />
-            </IconButton>
-        );
-    }
-}
+// class ToggleDarkMode extends React.Component {
+//     render() {
+//         return (
+//             <IconButton onClick={this.props.toggle} aria-label="toggleDarkMode">
+//                 <Brightness4Icon fontSize="large" />
+//             </IconButton>
+//         );
+//     }
+// }
 export default App;

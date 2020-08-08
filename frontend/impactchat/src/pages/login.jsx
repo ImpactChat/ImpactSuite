@@ -3,11 +3,15 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import LockOutlinedIcon from '@material-ui/icons/Lock';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+
+import ToggleDarkMode from '../components/toogleDarkMode';
+
+
+import Input from '../components/inputField'
 
 export const useStyles = makeStyles((theme) => ({
     paper: {
@@ -29,9 +33,11 @@ export const useStyles = makeStyles((theme) => ({
     },
 }));
   
-export default function LoginPage() {
+export default function LoginPage(props) {
         const classes = useStyles();
         return (
+            <>
+            <ToggleDarkMode toggle={props.toggle} />
             <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
@@ -42,18 +48,19 @@ export default function LoginPage() {
                 Sign in
               </Typography>
               <form className={classes.form} noValidate action="/">
-                <TextField
+              
+                <Input
                   variant="outlined"
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
                   autoFocus
                 />
-                <TextField
+                <Input
                   variant="outlined"
                   margin="normal"
                   required
@@ -76,5 +83,6 @@ export default function LoginPage() {
               </form>
             </div>
           </Container>
+          </>
         );
 }
