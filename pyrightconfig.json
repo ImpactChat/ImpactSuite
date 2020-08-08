@@ -1,0 +1,11 @@
+{
+  "venvPath": "./backend/venv/",
+  "typingsPath": "./typestubs",
+  
+  "executionEnvironments": [
+    {
+      "root": "./",
+      "venv": "./"
+    }
+  ]
+}
