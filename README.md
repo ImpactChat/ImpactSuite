@@ -1,3 +1,5 @@
-# ImpactChat-Server
+# ImpactChat
 
-The Backend Server for ImpactChat
+## Running the Frontend
+`cd frontend/impactchat`
+`npm start`
