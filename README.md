@@ -6,6 +6,7 @@ ImpactChat is an experimental chatting software that is currently in the works!
 > These instructions are currently written for linux
 ### Building Frontend
 `cd frontend/impactchat/`  
+`npm i`
 `npm run build`  
 
 ### Running Backend
