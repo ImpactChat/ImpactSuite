@@ -7,6 +7,7 @@ import { CssBaseline } from '@material-ui/core';
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 
 import Login from './pages/login';
+import Messages from './pages/messages';
 
 import lightTheme from './themes/light-theme.js';
 import darkTheme from './themes/dark-theme.js';
@@ -36,8 +37,8 @@ class App extends React.Component {
           <MuiThemeProvider theme={this.state.theme()}>
             <CssBaseline/>
             <Switch>
-                    <Route exact path={"/"} render={() => <Login toggle={this.toggleDarkMode} />} />
-                    <Route exact path={"/example"} render={() => <p>Hi</p>} />
+                    <Route exact path={"/"}           render={() => <Login      toggle={this.toggleDarkMode} />} />
+                    <Route exact path={"/messages"}   render={() => <Messages   toggle={this.toggleDarkMode} />} />
             </Switch>
           </MuiThemeProvider>
         </BrowserRouter>
