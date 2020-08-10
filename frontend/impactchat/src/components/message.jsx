@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 
+import blue from '@material-ui/core/colors/blue';
+
 import MDRenderer from './markdownRenderer';
 
 
@@ -23,6 +25,16 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     paddingTop: theme.spacing(2)
   },
+  a: {
+      color: blue[500]
+  },
+  message: {
+      '& p': {
+        marginTop: 0,
+        wordBreak: 'break-word',
+        overflowWrap: 'break-word'
+      }
+  }
 }));
 
 
@@ -31,7 +43,13 @@ export default function Message(props) {
     if (!props.isLoading)
     {
         const message = props.message;
-        
+        const renderers = {
+            link: (props) => 
+                <a target="_blank" rel="noopener noreferrer" href={props.href} className={classes.a}>{props.children[0].props.children}</a>,
+            text: (props) =>
+                <span>{props.children}</span>
+
+        }
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
@@ -39,8 +57,8 @@ export default function Message(props) {
                         <Grid item>
                             <Avatar>W</Avatar>
                         </Grid>
-                        <Grid item xs>
-                            <Typography variant="body1"><MDRenderer source={message} /></Typography>
+                        <Grid item xs className={classes.message}>
+                            <MDRenderer source={message} renderers={renderers} />
                         </Grid>
                     </Grid>
                     <Grid container wrap="nowrap" spacing={2}>
