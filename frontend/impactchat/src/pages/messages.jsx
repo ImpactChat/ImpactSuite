@@ -1,23 +1,23 @@
 import React from 'react';
 
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
+import Fab from '@material-ui/core/Fab';
 
+// import AppBar from '@material-ui/core/AppBar';
+// import Toolbar from '@material-ui/core/Toolbar';
+// import Typography from '@material-ui/core/Typography';
+// import Button from '@material-ui/core/Button';
+// import CssBaseline from '@material-ui/core/CssBaseline';
 
-import ToggleDarkMode from '../components/toogleDarkMode';
+import AddIcon from '@material-ui/icons/Add';
+
+// import ToggleDarkMode from '../components/toogleDarkMode';
 import MessageList from '../components/messageList';
 import ChannelList from '../components/channelList';
 import InputField from '../components/inputField';
 
 
 
-import { Grid } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   gridContainer: {
     display: 'grid',
     gridTemplateColumns: '0.5fr 2.1fr 0.4fr',
-    gridTemplateRows: '0.0fr  0, 3.3f 0.2fr 0.2fr',
+    gridTemplateRows: '0.0fr 3.3fr 0.2fr 0.1fr',
     gap: '1px 1px',
     gridTemplateAreas: `". . ." "Channels Messages Online" "Channels Input Online" "Channels . Online"`,
   },
@@ -52,7 +52,7 @@ export default function MessageDisplay(props) {
   document.body.style.overflow = "hidden";
   return (
       <>
-        <AppBar position="sticky">
+        {/* <AppBar position="sticky">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               ImpactChat
@@ -60,7 +60,7 @@ export default function MessageDisplay(props) {
             <ToggleDarkMode toggle={props.toggle} />
             <Button color="inherit">Logout</Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
 
         {/* <Container component="main" maxWidth="xl" className={classes.content} >
           <CssBaseline /> */}
@@ -81,13 +81,17 @@ export default function MessageDisplay(props) {
                     id="message"
                     label="Message"
                     name="message"
-                    autocomplete="off"
+                    autoComplete="off"
                 />
               </div>
               <div className={classes.Online}>
                 <Skeleton />
               </div>
             </div>
+            <Fab color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
+
       {/* </Container> */}
     </>
   );
