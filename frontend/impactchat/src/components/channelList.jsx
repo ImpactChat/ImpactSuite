@@ -94,7 +94,6 @@ export default function ChannelList() {
     const generateList = function(list, idx) {
         if (list.length === 0)
             return
-        console.log(list)
         return (
             <List component="nav" key={Math.random().toString()}>
                 {list.map((item, i) => {

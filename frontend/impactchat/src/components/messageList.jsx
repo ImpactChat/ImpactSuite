@@ -17,7 +17,7 @@ $$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$`;
 const messageMDMathJax = `When $a \\ne 0$, there are **two** solutions to $ax^2 + bx + c = 0$ and they are  
 $$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$`;
 
-export default function MessageList()
+export default function MessageList(props)
 {
     return (
         <>
@@ -37,6 +37,9 @@ export default function MessageList()
             <Message message={message} avatar="W" datetime="2020-03-27 12:30" />
             <Message message={message} avatar="W" datetime="2020-03-27 12:30" />
             <Message message={message} avatar="W" datetime="2020-03-27 12:30" />
+            {
+                props.messages.map((val, i) =>  <Message message={val} avatar="W" datetime="2020-03-27 12:30" />)
+            }
         </>
     );
 }

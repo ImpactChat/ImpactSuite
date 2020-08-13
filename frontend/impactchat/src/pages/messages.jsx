@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
 
 // import AppBar from '@material-ui/core/AppBar';
 // import Toolbar from '@material-ui/core/Toolbar';
@@ -9,17 +8,18 @@ import Fab from '@material-ui/core/Fab';
 // import Button from '@material-ui/core/Button';
 // import CssBaseline from '@material-ui/core/CssBaseline';
 
-import AddIcon from '@material-ui/icons/Add';
+import SendIcon from '@material-ui/icons/Send';
 
 // import ToggleDarkMode from '../components/toogleDarkMode';
 import MessageList from '../components/messageList';
 import ChannelList from '../components/channelList';
 import InputField from '../components/inputField';
 
-
-
 import Skeleton from '@material-ui/lab/Skeleton';
+import IconButton from '@material-ui/core/IconButton';
 
+
+import ReconnectingWebSocket from 'reconnecting-websocket'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,26 +50,42 @@ const useStyles = makeStyles((theme) => ({
 export default function MessageDisplay(props) {
   const classes = useStyles();
   document.body.style.overflow = "hidden";
+
+  const [messages, setMessages] = React.useState(['a', 'b']);
+  const [inputMessage, setInputMessages] = React.useState("");
+
+  const roomName = "lobby";
+
+  const chatSocket = new ReconnectingWebSocket(
+      'ws://'
+      + window.location.host
+      + '/ws/chat/'
+      + roomName
+      + '/'
+  );
+  chatSocket.onopen = function(e) {
+    console.log('Chat socket opened');
+    // chatSocket.send(JSON.stringify({message: "abcde"}));
+  };
+
+  chatSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      console.log(data);
+      setMessages([...messages, data.message]);
+  };
+
+  chatSocket.onclose = function(e) {
+      console.log('Chat socket closed');
+  };
+
   return (
       <>
-        {/* <AppBar position="sticky">
-          <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              ImpactChat
-            </Typography>
-            <ToggleDarkMode toggle={props.toggle} />
-            <Button color="inherit">Logout</Button>
-          </Toolbar>
-        </AppBar> */}
-
-        {/* <Container component="main" maxWidth="xl" className={classes.content} >
-          <CssBaseline /> */}
             <div className={classes.gridContainer}>
                 <div className={classes.Channels}>
                   <ChannelList />
                 </div>
                 <div className={classes.Messages}>
-                  <MessageList />
+                  <MessageList messages={messages} />
                 </div>
                 <div className={classes.Input}>
                   <InputField
@@ -82,66 +98,18 @@ export default function MessageDisplay(props) {
                     label="Message"
                     name="message"
                     autoComplete="off"
+                    value={inputMessage}
+                    onChange={function(e){setInputMessages(e.target.value)}}
                 />
+                <IconButton onClick={function(){chatSocket.send(JSON.stringify({message: inputMessage}));setInputMessages("")}}>
+                  <SendIcon />
+                </IconButton>
+
               </div>
               <div className={classes.Online}>
                 <Skeleton />
               </div>
             </div>
-            <Fab color="primary" aria-label="add">
-              <AddIcon />
-            </Fab>
-
-      {/* </Container> */}
     </>
   );
 }
-
-
-/*
-  return (
-      <>
-        <AppBar position="sticky">
-          <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              ImpactChat
-            </Typography>
-            <ToggleDarkMode toggle={props.toggle} />
-            <Button color="inherit">Logout</Button>
-          </Toolbar>
-        </AppBar>
-
-        <Container component="main" maxWidth="xl" className={classes.content} >
-          <CssBaseline />
-          <Grid container>
-            <Grid item sm={3} >
-              <Box style={{maxHeight: '95vh', minHeight: '95vh', overflow: 'auto'}}>
-                  <ChannelList />
-              </Box>
-            </Grid>
-            <Grid item sm={7} >
-                <Box style={{maxHeight: '95vh', minHeight: '95vh', overflow: 'auto'}}>
-                  <MessageList />
-                  <Box style={{width: '100%', marginLeft: '5px',}}>
-                    <InputField
-                      variant="outlined"
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="message"
-                      label="Message"
-                      name="message"
-                      autocomplete="off"
-                      autoFocus
-                  />
-                  </Box>
-                </Box>
-            </Grid>
-            <Grid item sm={2} >
-            <Skeleton />
-            </Grid>
-          </Grid>
-      </Container>
-    </>
-  );
-*/
