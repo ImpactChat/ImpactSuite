@@ -38,7 +38,7 @@ export default function MessageList(props)
             <Message message={message} avatar="W" datetime="2020-03-27 12:30" />
             <Message message={message} avatar="W" datetime="2020-03-27 12:30" />
             {
-                props.messages.map((val, i) =>  <Message message={val} avatar="W" datetime="2020-03-27 12:30" />)
+                props.messages.map((val, i) =>  <Message message={val} key={val} avatar="W" datetime="2020-03-27 12:30" />)
             }
         </>
     );

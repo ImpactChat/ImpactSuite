@@ -21,14 +21,20 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      theme: getThemeDark,
+      theme: localStorage.getItem("theme") === "light" ? getThemeLight : getThemeDark,
     }
     this.toggleDarkMode = this.toggleDarkMode.bind(this);
   }
 
   toggleDarkMode() {
-    this.setState(prevState => ({
-      theme: prevState.theme === getThemeLight ? getThemeDark : getThemeLight
+    this.setState((function(prevState) {
+      if (prevState.theme === getThemeLight)
+      {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+      return ({theme: prevState.theme === getThemeLight ? getThemeDark : getThemeLight});
     }))};
 
   render() {

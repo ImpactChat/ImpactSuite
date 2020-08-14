@@ -101,9 +101,8 @@ export default function ChannelList() {
                     {
 
                         return (
-                            <>
+                            <div key={item.channelID.toString()}>
                                 <ListItem button
-                                    key={item.channelID.toString()}
                                     className={idx !== 0 ? classes.nested : null}
                                     selected={selectedIndex === item.channelID}
                                     onClick={function (event) { handleListItemClick(event, item.channelID); /*handleClick(i)*/}}
@@ -114,7 +113,7 @@ export default function ChannelList() {
                                     <ListItemText primary={item.name} secondary={item.subtitle === undefined ? null : item.subtitle} />
                                 </ListItem>
                                 {generateList(item.children, idx + 1)}
-                            </>
+                            </div>
 
                         );
                     }
