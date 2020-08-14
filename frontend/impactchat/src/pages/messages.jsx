@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 
 import SendIcon from '@material-ui/icons/Send';
 
@@ -15,9 +15,32 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import IconButton from '@material-ui/core/IconButton';
 
 
-import ReconnectingWebSocket from 'reconnecting-websocket'
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
-const useStyles = makeStyles((theme) => ({
+
+const roomName = "lobby";
+const chatSocket = new ReconnectingWebSocket(
+    'ws://'
+    + window.location.host
+    + '/ws/chat/'
+    + roomName
+    + '/'
+);
+chatSocket.onopen = function(e) {
+  console.log('Chat socket opened');
+  // chatSocket.send(JSON.stringify({message: "abcde"}));
+};
+chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    console.log(data);
+    this.setState({messages: [...this.state.messages, data.message]})
+};
+chatSocket.onclose = function(e) {
+    console.log('Chat socket closed');
+};
+
+
+const styles = theme => ({
   root: {
     flexGrow: 1,
   },
@@ -41,108 +64,90 @@ const useStyles = makeStyles((theme) => ({
   Messages: { gridArea: 'Messages', overflow: 'auto', maxHeight: '85vh' },
   Input: { gridArea: 'Input',                           },
   
-}));
+});
 
 
   
-export default function MessageDisplay(props) {
-  const classes = useStyles();
+class MessageDisplay extends React.Component {
 
-  document.body.style.overflow = "hidden";
-
-  const [messages, setMessages] = React.useState(['a', 'b']);
-  const [inputMessage, setInputMessages] = React.useState("");
-
-  const roomName = "lobby";
-
-  const chatSocket = new ReconnectingWebSocket(
-      'ws://'
-      + window.location.host
-      + '/ws/chat/'
-      + roomName
-      + '/'
-  );
-  chatSocket.onopen = function(e) {
-    console.log('Chat socket opened');
-    // chatSocket.send(JSON.stringify({message: "abcde"}));
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   };
 
-  chatSocket.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      console.log(data);
-      setMessages([...messages, data.message]);
-  };
+  handleInputChange = (e) => {
+    this.setState({inputMessage: e.target.value})
+  }
 
-  chatSocket.onclose = function(e) {
-      console.log('Chat socket closed');
-  };
+  handleInputSubmit = () => {
+    chatSocket.send(JSON.stringify({message: this.state.inputMessage}));
+    this.setState({inputMessage: ""})
+  }
+  
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+  
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
 
+  constructor(props)
+  {
+    super(props);
+    this.state = {
+      messages: ['a', 'b'],
+      inputMessage: ""
+    }
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputSubmit = this.handleInputSubmit.bind(this);
+  }
 
+  render() {
+    const { classes } = this.props;
 
+    document.body.style.overflow = "hidden";
 
-  return (
-      <>
-            <div className={classes.gridContainer}>
-                <div className={classes.Channels}>
-                  <ChannelList />
+  
+
+    return (
+        <>
+              <div className={classes.gridContainer}>
+                  <div className={classes.Channels}>
+                    <ChannelList />
+                  </div>
+                  <div className={classes.Messages}>
+                    <MessageList messages={this.state.messages} />
+                    <div style={{ float:"left", clear: "both" }}
+                      ref={(el) => { this.messagesEnd = el; }}>
+                  </div>
+                  </div>
+                  <div className={classes.Input}>
+                    <InputField
+                      style={{marginLeft: '10px', marginRight: '10px'}}
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="message"
+                      label="Message"
+                      name="message"
+                      autoComplete="off"
+                      value={this.state.inputMessage}
+                      onChange={this.handleInputChange}
+                  />
+                  <IconButton onClick={this.handleInputSubmit}>
+                    <SendIcon />
+                  </IconButton>
+
                 </div>
-                <div className={classes.Messages}>
-                  <MessageList messages={messages} />
+                <div className={classes.Online}>
+                  <Settings toggle={this.props.toggle}/>
+                  <Skeleton />
                 </div>
-                <div className={classes.Input}>
-                  <InputField
-                    style={{marginLeft: '10px', marginRight: '10px'}}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="message"
-                    label="Message"
-                    name="message"
-                    autoComplete="off"
-                    value={inputMessage}
-                    onChange={function(e){setInputMessages(e.target.value)}}
-                />
-                <IconButton onClick={function(){chatSocket.send(JSON.stringify({message: inputMessage}));setInputMessages("")}}>
-                  <SendIcon />
-                </IconButton>
-
               </div>
-              <div className={classes.Online}>
-                <Settings toggle={props.toggle}/>
-                  {/* <div>
-                    <IconButton  onClick={handleClickOpen}>
-                      <Settings />
-                    </IconButton>
-                    <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-                      <AppBar className={classes.appBar}>
-                        <Toolbar>
-                          <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-                            <CloseIcon />
-                          </IconButton>
-                          <Typography variant="h6" className={classes.title}>
-                            Sound
-                          </Typography>
-                          <Button autoFocus color="inherit" onClick={handleClose}>
-                            save
-                          </Button>
-                        </Toolbar>
-                      </AppBar>
-                      <List>
-                        <ListItem button>
-                          <ListItemText primary="Phone ringtone" secondary="Titania" />
-                        </ListItem>
-                        <Divider />
-                        <ListItem button>
-                          <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-                        </ListItem>
-                      </List>
-                    </Dialog>
-                  </div> */}
-
-                <Skeleton />
-              </div>
-            </div>
-    </>
-  );
+      </>
+    );
+  }
 }
+
+export default withStyles(styles, { withTheme: true })(MessageDisplay);
