@@ -11,6 +11,7 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Switch from '@material-ui/core/Switch';
@@ -29,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
     },
-
     heading: {
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
@@ -66,6 +66,7 @@ export default function Settings(props) {
         setState({ ...state, [event.target.name]: event.target.checked });
     };
     
+    const accordionHeight = 2;
 
     return (
         <>
@@ -89,7 +90,7 @@ export default function Settings(props) {
                 <List>
                     <Container>
                         <div className={classes.root}>
-                            <Accordion>
+                            <Accordion elevation={accordionHeight}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="panel1a-content"
@@ -112,7 +113,7 @@ export default function Settings(props) {
                                     </FormGroup>
                                 </AccordionDetails>
                             </Accordion>
-                            <Accordion>
+                            <Accordion elevation={accordionHeight}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="panel2a-content"
@@ -125,6 +126,20 @@ export default function Settings(props) {
                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
                                         sit amet blandit leo lobortis eget.
                                     </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+                            <Accordion elevation={accordionHeight}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel3a-content"
+                                    id="panel3a-header"
+                                >
+                                    <Typography className={classes.heading}>Account</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Button variant="outlined" color="secondary">
+                                        Logout
+                                    </Button>
                                 </AccordionDetails>
                             </Accordion>
                         </div>
