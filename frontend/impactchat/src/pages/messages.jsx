@@ -11,9 +11,7 @@ import Settings from '../components/settings';
 import Skeleton from '@material-ui/lab/Skeleton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SendIcon from '@material-ui/icons/Send';
-import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
