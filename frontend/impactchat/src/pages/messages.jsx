@@ -13,6 +13,7 @@ import Settings from '../components/settings';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -74,14 +75,6 @@ class MessageDisplay extends React.Component {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   };
 
-  handleInputChange = (e) => {
-    this.setState({inputMessage: e.target.value})
-  }
-
-  handleInputSubmit = () => {
-    chatSocket.send(JSON.stringify({message: this.state.inputMessage}));
-    this.setState({inputMessage: ""})
-  }
   
   componentDidMount() {
     this.scrollToBottom();
@@ -96,18 +89,12 @@ class MessageDisplay extends React.Component {
     super(props);
     this.state = {
       messages: ['a', 'b'],
-      inputMessage: ""
     }
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleInputSubmit = this.handleInputSubmit.bind(this);
   }
-
   render() {
     const { classes } = this.props;
 
     document.body.style.overflow = "hidden";
-
-  
 
     return (
         <>
@@ -122,22 +109,7 @@ class MessageDisplay extends React.Component {
                   </div>
                   </div>
                   <div className={classes.Input}>
-                    <InputField
-                      style={{marginLeft: '10px', marginRight: '10px'}}
-                      variant="outlined"
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="message"
-                      label="Message"
-                      name="message"
-                      autoComplete="off"
-                      value={this.state.inputMessage}
-                      onChange={this.handleInputChange}
-                  />
-                  <IconButton onClick={this.handleInputSubmit}>
-                    <SendIcon />
-                  </IconButton>
+                    <MessageInput />
 
                 </div>
                 <div className={classes.Online}>
@@ -147,6 +119,57 @@ class MessageDisplay extends React.Component {
               </div>
       </>
     );
+  }
+}
+
+class MessageInput extends React.Component {
+  handleInputChange = (e) => {
+    this.setState({inputMessage: e.target.value})
+  }
+
+  handleInputSubmit = () => {
+    chatSocket.send(JSON.stringify({message: this.state.inputMessage}));
+    this.setState({inputMessage: ""})
+  }
+
+  constructor(props)
+  {
+    super(props);
+    this.state = {
+      inputMessage: ""
+    }
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputSubmit = this.handleInputSubmit.bind(this);
+  }
+
+
+
+  render() {
+    return (
+      <>
+          <InputField
+            style={{marginLeft: '10px', marginRight: '10px'}}
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="message"
+            label="Message"
+            name="message"
+            autoComplete="off"
+            value={this.state.inputMessage}
+            onChange={this.handleInputChange}
+            InputProps={{
+              endAdornment: <InputAdornment position="end"> 
+                <IconButton onClick={this.handleInputSubmit}>
+                    <SendIcon />
+                </IconButton>
+              </InputAdornment>,
+            }}
+        />
+       
+      </>
+  );
   }
 }
 
