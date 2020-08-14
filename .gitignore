@@ -14,6 +14,9 @@ frontend/**/coverage
 # production
 frontend/**/build
 
+# Alternative build folder
+build/
+
 # misc
 .DS_Store
 .env.local
