@@ -6,6 +6,7 @@ import MessageList from '../components/messageList';
 import ChannelList from '../components/channelList';
 import InputField from '../components/inputField';
 import Settings from '../components/settings';
+import { getCookie } from '../components/CSRFToken';
 
 
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -15,28 +16,6 @@ import IconButton from '@material-ui/core/IconButton';
 
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
-
-
-const roomName = "lobby";
-const chatSocket = new ReconnectingWebSocket(
-    'ws://'
-    + window.location.host
-    + '/ws/chat/'
-    + roomName
-    + '/'
-);
-chatSocket.onopen = function(e) {
-  console.log('Chat socket opened');
-  // chatSocket.send(JSON.stringify({message: "abcde"}));
-};
-chatSocket.onmessage = function(e) {
-    const data = JSON.parse(e.data);
-    console.log(data);
-    this.setState({messages: [...this.state.messages, data.message]})
-};
-chatSocket.onclose = function(e) {
-    console.log('Chat socket closed');
-};
 
 
 const styles = theme => ({
@@ -64,13 +43,21 @@ const styles = theme => ({
   Input: { gridArea: 'Input',                           },
   
 });
+// var pathname = window.location.pathname.sl ;
+const roomName = window.location.pathname.split("/messages/")[1];
+const chatSocket = new ReconnectingWebSocket(
+  'ws://'
+  + window.location.host
+  + '/ws/chat/'
+  + roomName
+  + '/'
+);
 
 
-  
 class MessageDisplay extends React.Component {
 
   scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    this.messagesEnd.scrollIntoView(false);
   };
 
   
@@ -82,17 +69,54 @@ class MessageDisplay extends React.Component {
     this.scrollToBottom();
   }
 
+  async getMessages() {
+    const response = await fetch('/api/messages/get', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
+      },
+      body: JSON.stringify({channel: roomName}) // body data type must match "Content-Type" header
+    });
+    const res = await response.json();
+    this.setState({messages: res.messages})
+    this.setState({loading: false})
+  }
+  
+
   constructor(props)
   {
     super(props);
     this.state = {
       messages: ['a', 'b'],
+      loading: true
     }
+    this.getMessages = this.getMessages.bind(this);
+    this.getMessages();
   }
   render() {
     const { classes } = this.props;
 
+  
+
     document.body.style.overflow = "hidden";
+
+
+    chatSocket.onopen = function(e) {
+      console.log('Chat socket opened');
+    };
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log("Received message from WS:", data);
+        this.setState({messages: [...this.state.messages, data.new_message]})
+
+    }.bind(this);
+
+    chatSocket.onclose = function(e) {
+        console.log('Chat socket closed');
+    };
+
+
 
     return (
         <>
@@ -101,13 +125,13 @@ class MessageDisplay extends React.Component {
                     <ChannelList />
                   </div>
                   <div className={classes.Messages}>
-                    <MessageList messages={this.state.messages} />
+                    <MessageList loading={this.state.loading} messages={this.state.messages} />
                     <div style={{ float:"left", clear: "both" }}
                       ref={(el) => { this.messagesEnd = el; }}>
                   </div>
                   </div>
                   <div className={classes.Input}>
-                    <MessageInput />
+                    <MessageInput socket={chatSocket} />
 
                 </div>
                 <div className={classes.Online}>
@@ -126,7 +150,12 @@ class MessageInput extends React.Component {
   }
 
   handleInputSubmit = () => {
-    chatSocket.send(JSON.stringify({message: this.state.inputMessage}));
+    if (this.state.inputMessage === "")
+    {
+      return
+    }
+    console.log("Sending:", this.state.inputMessage)
+    this.props.socket.send(JSON.stringify({message: this.state.inputMessage, channel: roomName, type: 'chat.new'}));
     this.setState({inputMessage: ""})
   }
 

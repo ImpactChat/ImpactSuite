@@ -43,8 +43,8 @@ class App extends React.Component {
           <MuiThemeProvider theme={this.state.theme()}>
             <CssBaseline/>
             <Switch>
-                <Route exact path={"/"}           render={() => <Login      toggle={this.toggleDarkMode} />} />
-                <Route exact path={"/messages"}   render={() => <Messages   toggle={this.toggleDarkMode} />} />
+                <Route exact path={"/login"}                    render={() => <Login      toggle={this.toggleDarkMode} />} />
+                <Route exact path={"/messages/:channel(.*)"}    render={() => <Messages   toggle={this.toggleDarkMode} />} />
             </Switch>
           </MuiThemeProvider>
         </BrowserRouter>

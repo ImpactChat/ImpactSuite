@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container';
 
 import ToggleDarkMode from '../components/toogleDarkMode';
 
-
+import CSRFToken from '../components/CSRFToken'
 import Input from '../components/inputField'
 
 export const useStyles = makeStyles((theme) => ({
@@ -47,8 +47,9 @@ export default function LoginPage(props) {
               <Typography component="h1" variant="h5">
                 Sign in
               </Typography>
-              <form className={classes.form} noValidate action="/">
-              
+              <form className={classes.form} noValidate action="/login" method='POST'>
+                <CSRFToken />
+
                 <Input
                   variant="outlined"
                   margin="normal"

@@ -12,6 +12,8 @@ import blue from '@material-ui/core/colors/blue';
 
 import MDRenderer from './markdownRenderer';
 
+import moment from 'moment';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,12 +52,15 @@ export default function Message(props) {
                 <span>{props.children}</span>
 
         }
+        const timestamp = moment(props.datetime).local();
+        const offset = timestamp.fromNow();
+        
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <Grid container wrap="nowrap" spacing={2}>
                         <Grid item>
-                            <Avatar>W</Avatar>
+                            <Avatar>{props.avatar}</Avatar>
                         </Grid>
                         <Grid item xs className={classes.message}>
                             <MDRenderer source={message} renderers={renderers} />
@@ -63,7 +68,7 @@ export default function Message(props) {
                     </Grid>
                     <Grid container wrap="nowrap" spacing={2}>
                         <Grid item xs>
-                            <Typography variant="body2" align="right">{props.datetime}</Typography>
+                            <Typography variant="body2" align="right">{offset}</Typography>
                         </Grid>
                     </Grid>
                 </Paper>

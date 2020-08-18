@@ -137,7 +137,7 @@ export default function Settings(props) {
                                     <Typography className={classes.heading}>Account</Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <Button variant="outlined" color="secondary">
+                                    <Button color="secondary" variant="outlined" onClick={function() { window.location.href = "http://localhost:8000/logout"}}>
                                         Logout
                                     </Button>
                                 </AccordionDetails>
