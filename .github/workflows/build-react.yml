@@ -22,5 +22,5 @@ jobs:
         with:
           name: build Folder
           path: |
-            build
-            !build/**/*.md
+            frontend/impactchat/build
+            !frontend/impactchat/build/**/*.md
