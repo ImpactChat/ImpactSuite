@@ -1,10 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
+// import List from '@material-ui/core/List';
+// import ListItem from '@material-ui/core/ListItem';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemText from '@material-ui/core/ListItemText';
+// import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 
-import Icon from '@material-ui/core/Icon';
+// import Icon from '@material-ui/core/Icon';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -96,7 +96,7 @@ const channelList = {
 
 export default function ChannelList() {
     const classes = useStyles();
-    const [selectedIndex, setSelectedIndex] = React.useState(channelList.channels[0].channelID);
+    // const [selectedIndex, setSelectedIndex] = React.useState(channelList.channels[0].channelID);
 
     // const [open, setOpen] = React.useState([]);
     const [value, setValue] = React.useState(0);
@@ -106,42 +106,42 @@ export default function ChannelList() {
     
 
 
-    const handleListItemClick = (event, index) => {
-        setSelectedIndex(index);
-    };
+    // const handleListItemClick = (event, index) => {
+    //     setSelectedIndex(index);
+    // };
 
-    const generateList = function(list, idx) {
-        if (list.length === 0)
-            return
-        return (
-            <List component="nav" key={Math.random().toString()}>
-                {list.map((item, i) => {
-                    if (!(item === "divider"))
-                    {
+    // const generateList = function(list, idx) {
+    //     if (list.length === 0)
+    //         return
+    //     return (
+    //         <List component="nav" key={Math.random().toString()}>
+    //             {list.map((item, i) => {
+    //                 if (!(item === "divider"))
+    //                 {
 
-                        return (
-                            <div key={item.channelID.toString()}>
-                                <ListItem button
-                                    className={idx !== 0 ? classes.nested : null}
-                                    selected={selectedIndex === item.channelID}
-                                    onClick={function (event) { handleListItemClick(event, item.channelID); /*handleClick(i)*/}}
-                                >
-                                    <ListItemIcon>
-                                        <Icon>{item.icon}</Icon>
-                                    </ListItemIcon>
-                                    <ListItemText primary={item.name} secondary={item.subtitle === undefined ? null : item.subtitle} />
-                                </ListItem>
-                                {generateList(item.children, idx + 1)}
-                            </div>
+    //                     return (
+    //                         <div key={item.channelID.toString()}>
+    //                             <ListItem button
+    //                                 className={idx !== 0 ? classes.nested : null}
+    //                                 selected={selectedIndex === item.channelID}
+    //                                 onClick={function (event) { handleListItemClick(event, item.channelID); /*handleClick(i)*/}}
+    //                             >
+    //                                 <ListItemIcon>
+    //                                     <Icon>{item.icon}</Icon>
+    //                                 </ListItemIcon>
+    //                                 <ListItemText primary={item.name} secondary={item.subtitle === undefined ? null : item.subtitle} />
+    //                             </ListItem>
+    //                             {generateList(item.children, idx + 1)}
+    //                         </div>
 
-                        );
-                    }
-                    else
-                        return <Divider key={`div-${Math.random()}`} />
-                })}
-            </List>
-        );
-    };
+    //                     );
+    //                 }
+    //                 else
+    //                     return <Divider key={`div-${Math.random()}`} />
+    //             })}
+    //         </List>
+    //     );
+    // };
     const generateTabList = function(list, idx) {
         if (list.length === 0)
             return
