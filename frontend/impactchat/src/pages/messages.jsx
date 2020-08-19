@@ -149,7 +149,8 @@ class MessageInput extends React.Component {
     this.setState({inputMessage: e.target.value})
   }
 
-  handleInputSubmit = () => {
+  handleInputSubmit = (e) => {
+    e.preventDefault();
     if (this.state.inputMessage === "")
     {
       return
@@ -173,7 +174,7 @@ class MessageInput extends React.Component {
 
   render() {
     return (
-      <>
+      <form onSubmit={this.handleInputSubmit}>
           <InputField
             style={{marginLeft: '10px', marginRight: '10px'}}
             variant="outlined"
@@ -188,14 +189,14 @@ class MessageInput extends React.Component {
             onChange={this.handleInputChange}
             InputProps={{
               endAdornment: <InputAdornment position="end"> 
-                <IconButton onClick={this.handleInputSubmit}>
+                <IconButton type={"submit"} onClick={this.handleInputSubmit}>
                     <SendIcon />
                 </IconButton>
               </InputAdornment>,
             }}
         />
        
-      </>
+      </form>
   );
   }
 }
