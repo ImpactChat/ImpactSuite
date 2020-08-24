@@ -39,14 +39,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build-react": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "watch": "npm-watch",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "deploy-storybook": "storybook-to-ghpages",
-    "build-web": "webpack",
+    "build": "webpack",
     "watch-web": "webpack --watch",
     "babel": "babel"
   },

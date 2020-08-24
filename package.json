@@ -1,0 +1,21 @@
+{
+  "name": "impact",
+  "version": "1.0.0",
+  "description": "### 0 - Set the secret key variable  - OSX/Linux    - `export IMPACT_SECRET_KEY=secret_key`  - Windows    - `set IMPACT_SECRET_KEY=secret_key` ### 1 - Start a REDIS instance  - OSX - with [brew](https://brew.sh/)     - `brew install redis`       - `brew services start redis`    - Linux     - `sudo apt update`     - `sudo apt install redis-server`     - `sudo systemctl restart redis.service`     - I didn't test this  - Other     - Get a redis server running at localhost 6379,  - If you what you're doing change `CHANNEL_LAYERS` entry in `settings.py`",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd ui-components && npm i && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImpactChat/ImpactChat.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ImpactChat/ImpactChat/issues"
+  },
+  "homepage": "https://github.com/ImpactChat/ImpactChat#readme"
+}
