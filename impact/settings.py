@@ -109,7 +109,7 @@ if 'test' in sys.argv:
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3'
     }
-print(DATABASES)
+# print(DATABASES)
 
 
 # Password validation
