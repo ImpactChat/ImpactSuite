@@ -9,12 +9,14 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+# pylint: disable=import-error
 # from json import load
 from pathlib import Path
 import os
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 import sys
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -105,6 +107,10 @@ DATABASES = {
         'PORT': '',
     },
 }
+
+if (os.environ.get("DATABASE_URL", None) is not None):
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True) 
+
 
 if 'test' in sys.argv:
     DATABASES['default'] = {
