@@ -101,8 +101,8 @@ class ChannelTestCase(TestCase):
         })
 
     def test_multiple_channels(self):
-        c1 = Channel.objects.create(name="Channel1")
-        c2 = Channel.objects.create(name="Channel2")
+        c1 = Channel.objects.create(name="Channel2")
+        c2 = Channel.objects.create(name="Channel3")
 
         u = User.objects.get(username="user")
 
@@ -111,7 +111,7 @@ class ChannelTestCase(TestCase):
 
         ser = json.dumps(c1.getMessagesJSON())
         self.assertJSONEqual(ser, {
-            'channel': "Channel1",
+            'channel': "Channel2",
             'pk': c1.pk,
             'messages': [
                 m1.getJSON(),
@@ -120,7 +120,7 @@ class ChannelTestCase(TestCase):
 
         ser = json.dumps(c2.getMessagesJSON())
         self.assertJSONEqual(ser, {
-            'channel': "Channel2",
+            'channel': "Channel3",
             'pk': c2.pk,
             'messages': [
                 m2.getJSON(),
