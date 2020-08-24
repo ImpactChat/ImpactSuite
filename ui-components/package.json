@@ -47,6 +47,7 @@
     "build-storybook": "build-storybook -s public",
     "deploy-storybook": "storybook-to-ghpages",
     "build": "webpack",
+    "build-web": "webpack",
     "watch-web": "webpack --watch",
     "babel": "babel"
   },
