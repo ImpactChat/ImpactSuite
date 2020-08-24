@@ -157,7 +157,8 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 os.makedirs(STATIC_ROOT, exist_ok=True)
-
+for i in STATICFILES_DIRS:
+    os.makedirs(STATIC_ROOT, exist_ok=True)
 
 
 AUTH_USER_MODEL = 'impactadmin.User'
