@@ -156,6 +156,8 @@ STATIC_ROOT = BASE_DIR / "impact/static"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+os.makedirs(STATIC_ROOT, exist_ok=True)
+
 
 
 AUTH_USER_MODEL = 'impactadmin.User'
