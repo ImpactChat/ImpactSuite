@@ -16,6 +16,7 @@ import os
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 import sys
+import django_heroku
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -189,3 +190,5 @@ LANGUAGES = [
 # LOGGING = {}
 # with open('impact/config/logconfig.json') as f:
 #     LOGGING = load(f)
+
+django_heroku.settings(locals())
