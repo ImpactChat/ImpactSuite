@@ -16,7 +16,6 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 import sys
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -28,7 +27,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = os.environ.get("IMPACT_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.14']
 
@@ -53,8 +52,11 @@ INSTALLED_APPS = [
     'django_react_views'
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    'impactadmin.middleware.CustomWhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
 
@@ -174,7 +176,6 @@ LANGUAGES = [
     ('en', _('English')),
     ('fr', _('French')),
 ]
-
 
 # LOGGING = {}
 # with open('impact/config/logconfig.json') as f:
