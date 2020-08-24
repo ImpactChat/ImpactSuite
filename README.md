@@ -63,7 +63,11 @@
  - `npm i`
  - `npm run build-web`  
  OR 
- - `npm run watch-web` 
+ - `npm run watch-web`  
+ OR 
+ - Download the latest build from github actions
+ - Unzip
+ - Put the dist folder in a folder called static at the top level of your project
 
 ### 5 - Collect static files (prod only)
  - `python3 manage.py collectstatic`  
