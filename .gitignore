@@ -8,14 +8,6 @@ node_modules/
 # venv
 venv
 
-# testing
-frontend/**/coverage
-
-# production
-frontend/**/build
-
-# Alternative build folder
-build/
 
 # misc
 .DS_Store
@@ -27,3 +19,17 @@ build/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+# more misc
+env/
+.vscode/
+node_modules/
+build/
+impact/static/
+__pycache__/
+dist/
+logs/
+
+.DS_Store
+*.mo

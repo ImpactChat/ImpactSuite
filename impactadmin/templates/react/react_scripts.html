@@ -1,0 +1,16 @@
+{% load react %}
+{% load static %}
+
+
+{{ props|json_script:"impact-props" }}
+{{ settings|json_script:"impact-settings" }}
+
+
+<script>
+    window.props = JSON.parse(document.getElementById('impact-props').textContent);
+    window.props.settings = JSON.parse(document.getElementById('impact-settings').textContent);
+   
+    window.key_field = "{{ key_field }}";
+    window.react_mount = document.getElementById('{{ react_root_id }}');
+</script>
+<script src="{% static component %}"></script>

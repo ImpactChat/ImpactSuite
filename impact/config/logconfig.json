@@ -1,0 +1,73 @@
+{
+    "version": 1,
+    "disable_existing_loggers": true,
+    "formatters": {
+        "standard": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S"
+        },
+        "verbose": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s %(filename)s/%(funcName)s(%(lineno)d) : %(message)s"
+        }
+    },
+    "handlers": {
+        "default": {
+            "level": "DEBUG",
+            "formatter": "standard",
+            "class": "logging.StreamHandler"
+        },
+        "file": {
+            "level": "DEBUG",
+            "formatter": "verbose",
+            "class": "logging.FileHandler",
+            "filename": "logs/django-log.log"
+        }
+
+    },
+    "loggers": {
+        "": {
+            "handlers": [
+                "default",
+                "file"
+            ],
+            "level": "DEBUG"
+        },
+        "aioredis": {
+            "handlers": [
+                "default",
+                "file"
+            ],
+            "level": "INFO"
+
+        },
+        "daphne.server": {
+            "handlers": [
+                "default",
+                "file"
+            ],
+            "level": "WARNING"
+        },
+        "daphne.http_protocol": {
+            "handlers": [
+                "default",
+                "file"
+            ],
+            "level": "WARNING"
+        },
+        "daphne.ws_protocol": {
+            "handlers": [
+                "default",
+                "file"
+            ],
+            "level": "INFO"
+        },
+        "django.channels.server": {
+            "handlers": [
+                "default",
+                "file"
+            ],
+            "level": "WARNING"
+
+        }
+    }
+}

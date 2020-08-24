@@ -1,26 +1,80 @@
-# ImpactChat
-ImpactChat is an experimental chatting software that is currently in the works!
+## Steps to start the server:
 
+### 0 - Set the secret key variable
+ - OSX/Linux
+   - `export IMPACT_SECRET_KEY=secret_key`
+ - Windows
+   - `set IMPACT_SECRET_KEY=secret_key`
+### 1 - Start a REDIS instance
+ - OSX - with [brew](https://brew.sh/)
+    - `brew install redis`  
+    - `brew services start redis`  
+ - Linux
+    - `sudo apt update`
+    - `sudo apt install redis-server`
+    - `sudo systemctl restart redis.service`
+    - I didn't test this
+ - Other
+    - Get a redis server running at localhost 6379,
+ - If you what you're doing change `CHANNEL_LAYERS` entry in `settings.py`
 
-## Contributing Instructions
-> These instructions are currently written for linux
-### Building Frontend
-`cd frontend/impactchat/`  
-`npm i`
-`npm run build`  
+### 2 - Start a database instance
+ - SQLite3
+    - Change to `DATABASES` entry in `settings.py` to:
+    ```py
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3,
+            }
+        }
+    ```
+    - Note: SQLite3 probably shouldn't be used in production (but that depends on you)
+ - PostgreSQL
+   - Change to `DATABASES` entry in `settings.py` to:
+    ```py
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'dbname',
+            'USER': 'dbuser',
+            'PASSWORD': 'dbpassword',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
+    ```
+    - OSX - with [brew](https://brew.sh/)
+      - Install:
+      - `brew install postgresql`
+      - `brew services start postgresql`
+      - List available databases:
+      - `psql -l`
+      - Create a database:
+      - `psql`
+      - `username=# CREATE DATABASE dbname`
 
-### Running Backend
-Navigate to folder  
-`cd backend`  
-Update PIP  
-`python3 -m pip install --user --upgrade pip`  
-Create Virtual Environment  
-`python3 -m pip install --user virtualenv`  
-`python3 -m venv venv`  
-Set Up Virtual Environment  
-`source venv/bin/activate`  
-`pip3 install -r requirements.txt`  
-Run Server  
-`python3 main.py`  
-When Finished, Exit Venv  
-`deactivate`  
+### 3 - Make the translations
+ - `python3 manage.py makemessages -l fr -l en -i "env/*"` (Optional)  
+ - `python3 manage.py compilemessages`
+
+### 4 - Compile React
+ - `cd ui-components`
+ - `npm i`
+ - `npm run build-web`  
+ OR 
+ - `npm run watch-web` 
+
+### 5 - Collect static files (prod only)
+ - `python3 manage.py collectstatic`  
+
+### 6 - Create a super user
+ - `python3 manage.py createsuperuser`
+
+### 7 - Make migrations
+ - `python3 manage.py makemigrations`
+ - `python3 manage.py migrate`
+
+### 8 - Start server
+ - `python3 manage.py runserver 0.0.0.0:8000`
+
