@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+import sys
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -100,9 +101,15 @@ DATABASES = {
         # 'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '',
-
-    }
+    },
 }
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3'
+    }
+print(DATABASES)
 
 
 # Password validation
