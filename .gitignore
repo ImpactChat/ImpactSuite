@@ -30,6 +30,7 @@ impact/static/
 __pycache__/
 dist/
 logs/
-
+htmlcov/
+.coverage
 .DS_Store
 *.mo

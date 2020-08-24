@@ -9,8 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import ToggleDarkMode from '../../../components/toogleDarkMode.jsx';
-
 import CSRFToken from '../../../components/CSRFToken.jsx'
 import Input from '../../../components/inputField.jsx'
 
@@ -36,14 +34,8 @@ export const useStyles = makeStyles((theme) => ({
   
 export default function LoginPage(props) {
         const classes = useStyles();
-        var toggleE;
-        if (props.toggle)
-        {
-          toggleE = <ToggleDarkMode toggle={props.toggle} />
-        }
         return (
             <>
-            {toggleE}
             <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>

@@ -9,7 +9,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import SaveIcon from '@material-ui/icons/Save';
@@ -18,7 +17,6 @@ import Button from '@material-ui/core/Button';
 import { useTranslation } from 'react-i18next';
 
 
-import ToggleDarkMode from '../../../components/toogleDarkMode.jsx';
 import { Divider } from '@material-ui/core';
 
 import AppBar from '../../../components/topAppBar.jsx';
@@ -65,10 +63,6 @@ export default function ProfilePage(props) {
         setLang(event.target.value);
     };
   
-    var toggleE;
-    if (props.toggle) {
-        toggleE = <ToggleDarkMode toggle={props.toggle} />
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -93,7 +87,6 @@ export default function ProfilePage(props) {
     return (
         <>
             <AppBar/>
-            {toggleE}
             <Container maxWidth="md">
                 <CssBaseline />
                 <div className={classes.paper}>

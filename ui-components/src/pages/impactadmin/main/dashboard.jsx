@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import ToggleDarkMode from '../../../components/toogleDarkMode.jsx';
 import { Divider } from '@material-ui/core';
 
 import AppList from '../../../components/appList.jsx';
@@ -39,16 +38,11 @@ export const useStyles = makeStyles((theme) => ({
 
 export default function DashboardPage(props) {
     const classes = useStyles();
-    var toggleE;
-    if (props.toggle) {
-        toggleE = <ToggleDarkMode toggle={props.toggle} />
-    }
     const { t, i18n } = useTranslation();
 
     return (
         <>
             <AppBar/>
-            {toggleE}
             <Container maxWidth="md">
                 <CssBaseline />
                 <div className={classes.paper}>
