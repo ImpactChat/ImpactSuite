@@ -17,7 +17,7 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: build
+          name: dist
           path: |
             static/dist
             !static/dist/**/*.md
