@@ -134,12 +134,14 @@ class ChatPage extends React.Component {
                         variant: data.severity,
                     })
               } else if (data.channels_deleted)  {
-                    for (var i = 0; i < this.state.channels.length; i++)
+                    const temp = this.state.channels
+                    for (var i = 0; i < temp.length; i++)
                     {
-                            if ((data.channels_deleted.some(c => c.pk === this.state.channels[i].pk)))
+                            console.log(i, this.state.channels.length)
+                            if ((data.channels_deleted.some(c => c.pk === temp[i].pk)))
                             {
                                 this.setState(state => {
-                                    const channels = state.channels.filter((item, j) => i !== j);
+                                    const channels = this.state.channels.filter((item, j) => i !== j);
                                     return {
                                         channels,
                                     };
