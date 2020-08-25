@@ -34,3 +34,4 @@ htmlcov/
 .coverage
 .DS_Store
 *.mo
+*.log
