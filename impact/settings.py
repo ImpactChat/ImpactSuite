@@ -175,10 +175,11 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [os.environ.get('REDIS_URL', ('127.0.0.1', 6379))],
         },
     },
 }
+'redis://h:pc7208f8b63cbb86c2f8364ded7b5ddaa48838e0338faf7e1a33bba56a4e4a44e@ec2-52-0-229-181.compute-1.amazonaws.com:18969'
 
 LOCALE_PATHS = BASE_DIR / "locale",
 LANGUAGES = [

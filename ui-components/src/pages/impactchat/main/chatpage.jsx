@@ -78,8 +78,9 @@ const actions = [
 // Out of scope because `render` is called multiple times
 // which means duplicate sockets are created
 const roomName = window.props.channel_pk;
+var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 const chatSocket = new ReconnectingWebSocket(
-    'ws://'
+    ws_scheme + '://'
     + window.location.host
     + '/ws/chat/'
     + roomName
