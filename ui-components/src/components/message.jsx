@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -53,8 +53,20 @@ export default function Message(props) {
 
         }
         const timestamp = moment(props.datetime).local();
-        const offset = timestamp.fromNow();
-        
+        const [offset, setoffset] = useState(timestamp.fromNow());
+
+        useEffect(() => {
+            var timerID = setInterval( () => tick(), 10000 );
+          
+            return function cleanup() {
+                clearInterval(timerID);
+              };
+        });
+          
+        function tick() {
+            setoffset(timestamp.fromNow());
+        }
+          
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper} eleation={0} square>

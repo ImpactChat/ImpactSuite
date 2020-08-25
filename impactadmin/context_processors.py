@@ -27,7 +27,8 @@ def react(request):
             "links":  {
                 "logout": str(reverse_lazy("impactadmin:logout")),
                 "profile": str(reverse_lazy("impactadmin:profile")),
-                "dashboard": str(reverse_lazy("impactadmin:dashboard"))
+                "dashboard": str(reverse_lazy("impactadmin:dashboard")),
+                "chat_app": str(reverse_lazy("impactchat:home"))
             }
         }
     }

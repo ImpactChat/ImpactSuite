@@ -50,6 +50,7 @@
     "deploy-storybook": "storybook-to-ghpages",
     "build": "webpack",
     "build-web": "webpack",
+    "build-web-prod": "webpack --mode production",
     "watch-web": "webpack --watch",
     "babel": "babel"
   },

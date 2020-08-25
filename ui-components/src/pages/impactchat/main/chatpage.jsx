@@ -106,6 +106,13 @@ class ChatPage extends React.Component {
             open: false,
             channels: window.props.channels
           }
+
+        console.log(roomName)
+        if (roomName === null)
+        {
+            window.location.href = window.props.settings.links.chat_app
+        }
+
       
     };  
     render() {
@@ -113,7 +120,7 @@ class ChatPage extends React.Component {
 
 
         chatSocket.onopen = function(e) {
-            console.log('Chat socket opened');
+            console.log('Chat socket opened!');
         };
         chatSocket.onmessage = function(e) {
               const data = JSON.parse(e.data);
