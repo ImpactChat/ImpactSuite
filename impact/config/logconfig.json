@@ -37,7 +37,7 @@
                 "default",
                 "file"
             ],
-            "level": "INFO"
+            "level": "DEBUG"
 
         },
         "daphne.server": {
@@ -45,28 +45,28 @@
                 "default",
                 "file"
             ],
-            "level": "WARNING"
+            "level": "DEBUG"
         },
         "daphne.http_protocol": {
             "handlers": [
                 "default",
                 "file"
             ],
-            "level": "WARNING"
+            "level": "DEBUG"
         },
         "daphne.ws_protocol": {
             "handlers": [
                 "default",
                 "file"
             ],
-            "level": "INFO"
+            "level": "DEBUG"
         },
         "django.channels.server": {
             "handlers": [
                 "default",
                 "file"
             ],
-            "level": "WARNING"
+            "level": "DEBUG"
 
         }
     }

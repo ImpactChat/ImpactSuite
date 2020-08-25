@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 # pylint: disable=import-error
-# from json import load
+from json import load
 from pathlib import Path
 import os
 from django.urls import reverse_lazy
@@ -33,7 +33,6 @@ SECRET_KEY = os.environ.get("IMPACT_SECRET_KEY")
 DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.14', 'impact-suite.herokuapp.com']
-
 
 # Application definition
 
@@ -187,8 +186,6 @@ LANGUAGES = [
     ('fr', _('French')),
 ]
 
-# LOGGING = {}
-# with open('impact/config/logconfig.json') as f:
-#     LOGGING = load(f)
-
-django_heroku.settings(locals())
+LOGGING = {}
+with open('impact/config/logconfig.json') as f:
+    LOGGING = load(f)
