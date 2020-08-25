@@ -20,7 +20,7 @@
             "level": "DEBUG",
             "formatter": "verbose",
             "class": "logging.FileHandler",
-            "filename": "logs/django-log.log"
+            "filename": "django-log.log"
         }
 
     },
