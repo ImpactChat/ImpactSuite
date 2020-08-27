@@ -1,50 +1,110 @@
-{% load i18n %}
+{% load i18n impactadmin %}
 
 {% if app_list %}
-  {% for app in app_list %}
-    <div class="app-{{ app.app_label }} module{% if app.app_url in request.path %} current-app{% endif %}">
-      <table>
-        <caption>
-          <a href="{{ app.app_url }}" class="section" title="{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}">{{ app.name }}</a>
-          <p>
-            {% with count=app.models|length %}
-              {% blocktranslate count counter=app.models|length %}
-                {{ counter }} object
-              {% plural %}
-                {{ counter }} objects
-              {% endblocktranslate %}
-            {% endwith %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+  integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+  crossorigin="anonymous"></script>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-          </p>
-        </caption>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+{% for app in app_list %}
+<div class="row">
+  <div class="col s12">
+    <div class="card light-blue darken-2">
+      <div class="card-content white-text">
+        <span class="card-title">
+          <a href="{{ app.app_url }}" class="section"
+            title="{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}">{{ app.name }}</a>
+        </span>
+        {% with count=app.models|length %}
+          {% blocktranslate count counter=app.models|length %}
+            {{ counter }} model
+          {% plural %}
+            {{ counter }} models
+          {% endblocktranslate %}
+        {% endwith %}
+      </div>
+      <div class="card-tabs ">
+        <ul class="tabs tabs-fixed-width">
+          {% for model in app.models %}
+            <li class="tab"><a href="#{{ model.object_name|lower }}">{{ model.object_name|lower }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card-content grey lighten-4">
         {% for model in app.models %}
-          <tr class="model-{{ model.object_name|lower }}{% if model.admin_url in request.path %} current-model{% endif %}">
-            {% if model.admin_url %}
-              <th scope="row"><a href="{{ model.admin_url }}"{% if model.admin_url in request.path %} aria-current="page"{% endif %}>{{ model.name }}</a></th>
-            {% else %}
-              <th scope="row">{{ model.name }}</th>
+
+
+        <div id="{{ model.object_name|lower }}" style="height: 65px">
+
+          {% if model.admin_url %}
+              <a href="{{ model.admin_url }}" {% if model.admin_url in request.path %} aria-current="page"
+              {% endif %}>{{ model.name }} ({{ model | number_objects:app }})</a>
+          {% else %}
+            { model.name }} ({{ model | number_objects:app }})
+          {% endif %}
+          <br>
+          <div class="model-actions" style="margin-left: 15px">
+            {% if model.add_url %}
+              <a href="{{ model.add_url }}" class=""><i class="material-icons tiny">add</i>{% translate 'Add' %}</a>  
             {% endif %}
 
-            {% if model.add_url %}
-              <td><a href="{{ model.add_url }}" class="addlink">{% translate 'Add' %}</a></td>
-            {% else %}
-              <td></td>
-            {% endif %}
+            <br>
 
             {% if model.admin_url and show_changelinks %}
               {% if model.view_only %}
-                <td><a href="{{ model.admin_url }}" class="viewlink">{% translate 'View' %}</a></td>
+                <a href="{{ model.admin_url }}" class=""><i class="material-icons tiny">view</i>{% translate 'View' %}</a>
               {% else %}
-                <td><a href="{{ model.admin_url }}" class="changelink">{% translate 'Change' %}</a></td>
+                <a href="{{ model.admin_url }}" class=""><i class="material-icons tiny">edit</i>{% translate 'Change' %}</a>
               {% endif %}
-            {% elif show_changelinks %}
-              <td></td>
             {% endif %}
-          </tr>
+          </div>
+
+
+        </div>
+
+
         {% endfor %}
-      </table>
+      </div>
     </div>
-  {% endfor %}
+  </div>
+</div>
+{% endfor %}
+
+{% comment %}
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large red">
+    <i class="large material-icons">add</i>
+  </a>
+  <ul>
+    <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+    <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+    <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+    <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+  </ul>
+</div>
+{% endcomment %}
+  
+
+
+<script>
+  var el = document.getElementsByClassName('tabs');
+  for (let item of el) {
+    var instance = M.Tabs.init(item, {});
+  }
+  $(document).ready(function(){
+    $('.fixed-action-btn').floatingActionButton();
+  });
+
+</script>
+
 {% else %}
-  <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
+<p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
 {% endif %}

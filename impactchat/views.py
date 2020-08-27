@@ -15,7 +15,7 @@ from .models import Channel
 # pylint: disable=no-member
 # Create your views here.
 class HomeView(LoginRequiredMixin, View):
-    def get(self, *args, **kwargs):  # Temp redirect to a channel
+    def get(self, *args, **kwargs):  # Temp redirect to a channel    
         return redirect("impactchat:channel",
                         channelpk=Channel.objects.filter(visible=True)
                         .first().pk)
