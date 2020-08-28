@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 from .models import User
-
+from .forms import UserChangeForm
 
 class UserAdminOver(UserAdmin):
     fieldsets = (
@@ -38,6 +38,8 @@ class UserAdminOver(UserAdmin):
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
         (_("Information"), {"fields": ("avatar", "locale")}),
     )
+
+    form = UserChangeForm
 
 
 admin.site.register(User, UserAdminOver)

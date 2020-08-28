@@ -42,7 +42,14 @@
 <script>
     $(document).ready(function(){
         $('.input-field select').formSelect();
+        $("input[type='radio']").wrap("<label></label>").parent().append("<span></span>");
       });
-            
-    
 </script>
+<style>
+    select[multiple] {
+        display: inline-block;
+    }
+    .related-widget-wrapper select {
+        display: inline-block;
+    }
+</style>
