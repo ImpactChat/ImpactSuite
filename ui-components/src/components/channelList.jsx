@@ -17,7 +17,7 @@ import { useSnackbar } from 'notistack';
 import Icon from '@material-ui/core/Icon';
 import { Link } from '@material-ui/core';
 const drawerWidth = "240px";
-
+const smallDrawerWidth = "190px"
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -46,9 +46,13 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "transparent",
         border: "none",
 
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('sm')]: {
           backgroundColor: "white",
+          // width: smallDrawerWidth,
         },
+        [theme.breakpoints.down("md")]: {
+          width: smallDrawerWidth,
+        }
 
         // backgroundColor: "transparent",
     },

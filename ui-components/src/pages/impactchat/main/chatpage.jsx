@@ -188,7 +188,6 @@ class ChatPage extends React.Component {
                         </Grid>
                     </div>
                     {window.props.can_manage ? <ChatFAB socket={chatSocket} channels={this.state.channels} /> : null}
-
             </>
         );
     }
