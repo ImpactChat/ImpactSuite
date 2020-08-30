@@ -1,9 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.utils.translation import gettext_lazy as _
 
 from .models import *
 from .forms import UserChangeForm
+
+class UserInline(GenericTabularInline):
+    model = User
+    extra = 1
+    ct_field = "user_role"
 
 class UserAdminOver(UserAdmin):
     fieldsets = (
@@ -37,9 +43,10 @@ class UserAdminOver(UserAdmin):
             },
         ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
-        (_("Information"), {"fields": ("avatar", "locale")}),
+        (_("Information"), {"fields": ("avatar", "locale", "user_role")}),
     )
-
+    list_display = ("username", "is_staff", "user_role")
+    # readonly_fields = ("user_role",)
     form = UserChangeForm
 
 
@@ -47,9 +54,11 @@ class UserAdminOver(UserAdmin):
 class StudentAdmin(admin.ModelAdmin):
     pass
 
+
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     pass
+
 
 @admin.register(Classroom)
 class ClassroomAdmin(admin.ModelAdmin):

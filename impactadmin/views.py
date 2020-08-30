@@ -1,10 +1,12 @@
 from json import loads
 
+import django
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -14,6 +16,13 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import View
 
 from django_react_views.views import ReactTemplateView
+
+from .models import Student
+
+# pylint: disable=no-member
+
+def can_administer(request):
+    return request.user.role == "teacher" or request.user.role == "staff"
 
 
 @method_decorator(ensure_csrf_cookie, name="dispatch")
@@ -25,6 +34,7 @@ class LoginView(ReactTemplateView, UserPassesTestMixin):
     react_component = "login.jsx"
     template_name = "impactadmin/login.html"
 
+    # redirect to dashboard if user is already authed
     @method_decorator(
         user_passes_test(
             lambda u: not u.is_authenticated,
@@ -48,7 +58,6 @@ class LoginView(ReactTemplateView, UserPassesTestMixin):
         else:
             messages.warning(request, "Incorrect username or password")
             return redirect("impactadmin:login")
-
 
 class LogoutView(View):
     """
@@ -125,7 +134,7 @@ class AdministrationView(LoginRequiredMixin, UserPassesTestMixin, ReactTemplateV
         return JsonResponse(data)
 
     def test_func(self):
-        return self.request.user.groups.filter(name="Teacher").exists()
+        return can_administer(self.request)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
@@ -141,8 +150,25 @@ class StudentAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
     react_component = "administration.jsx"
 
     def get(self, request):
-        data = {"a": "b"}
+        p = Paginator(Student.objects.all(), 2)
+        student_data = []
+        count = Student.objects.count()
+        try:
+            page = p.page(request.GET.get('page', 1))
+            for student in page.object_list:
+                student_data.append(student.user.getJSON())
+        except django.core.paginator.EmptyPage:
+            student_data = [None]
+    
+        data = {
+            'students': student_data,
+            'count': count,
+            'min_page': 1,
+            'max_page': p.num_pages,
+        }
+
+        
         return JsonResponse(data)
 
     def test_func(self):
-        return self.request.user.groups.filter(name="Teacher").exists()
+        return can_administer(self.request)
