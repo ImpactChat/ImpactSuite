@@ -103,3 +103,33 @@ class ProfileView(LoginRequiredMixin, ReactTemplateView):
             "availableLang": settings.LANGUAGES,
         }
         return context
+
+
+@method_decorator(ensure_csrf_cookie, name="dispatch")
+class AdministrationView(LoginRequiredMixin, UserPassesTestMixin, ReactTemplateView):
+    """
+    Display the administration interface to the user given they are in the 
+    a group with the correct permissions to access it
+    """
+
+    template_name = "impactadmin/administration.html"
+    react_component = "administration.jsx"
+
+    def post(self, request):
+        data = loads(request.body.decode("UTF-8"))
+        try:
+            request.user.locale = data["language"]
+            request.user.save()
+        except Exception as e:
+            raise e
+        # request.user.locale
+        return JsonResponse(data)
+    
+    def test_func(self):
+        return self.request.user.groups.filter(name='Teacher').exists()
+
+
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data()
+        return context

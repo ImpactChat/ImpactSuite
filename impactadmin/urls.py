@@ -17,14 +17,17 @@ from django.urls import path
 from django.views.generic.base import RedirectView
 from django.urls import reverse_lazy
 
-from .views import DashboardView, LoginView, LogoutView, ProfileView
+from .views import AdministrationView, DashboardView, LoginView, LogoutView, ProfileView
 
 urlpatterns = [
     path('',            RedirectView.as_view(
         url=reverse_lazy('impactadmin:login')),     name="redirect-login"),
+
     path('login/',     LoginView.as_view(),     name="login"),
     path('logout/',    LogoutView.as_view(),    name="logout"),
 
     path('dashboard/', DashboardView.as_view(), name="dashboard"),
     path('profile/',   ProfileView.as_view(), name="profile"),
+
+    path('administration/',   AdministrationView.as_view(), name="administration"),
 ]
