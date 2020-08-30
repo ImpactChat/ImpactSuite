@@ -7,7 +7,7 @@ from django.conf import settings
 class Channel(models.Model):
     class Meta:
         permissions = [
-            ("manage_channels", "Can add a channel using the view"), # noqa
+            ("manage_channels", "Can manage channels"), # noqa
         ]
 
     name = models.CharField(max_length=32, unique=True)

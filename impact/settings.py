@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'impactchat',
     'impactclass',
 
+    'jazzmin',
+
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -189,3 +191,7 @@ LANGUAGES = [
 LOGGING = {}
 with open('impact/config/logconfig.json') as f:
     LOGGING = load(f)
+
+JAZZMIN_SETTINGS = {
+    'user_avatar': False
+}

@@ -13,22 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
+from django.views.generic.base import RedirectView
+from django.urls import reverse_lazy
+
+from .views import StudentAPIView
 
 urlpatterns = [
-    path('admin/doc/', include('django.contrib.admindocs.urls')),
-    path('admin/', admin.site.urls),
-
-    # path('i18n/', include('django.conf.urls.i18n')),
-
-
-    path('chat/', include(('impactchat.urls', 'impactchat'),
-                          namespace='impactchat')),
-    
-    path('api/impactadmin/', include(('impactadmin.urls-api', 'impactadmin'),
-                     namespace='impactadmin-api')),
-
-    path('', include(('impactadmin.urls', 'impactadmin'),
-                     namespace='impactadmin'))
+    path('students/',   StudentAPIView.as_view(), name="students"),
 ]

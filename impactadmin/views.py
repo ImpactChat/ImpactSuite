@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -37,8 +37,7 @@ class LoginView(ReactTemplateView, UserPassesTestMixin):
 
     def post(self, request, *args, **kwargs):
         user = authenticate(
-            username=request.POST.get("username"),
-            password=request.POST.get("password")
+            username=request.POST.get("username"), password=request.POST.get("password")
         )
         if user is not None:
             login(request, user)
@@ -108,7 +107,7 @@ class ProfileView(LoginRequiredMixin, ReactTemplateView):
 @method_decorator(ensure_csrf_cookie, name="dispatch")
 class AdministrationView(LoginRequiredMixin, UserPassesTestMixin, ReactTemplateView):
     """
-    Display the administration interface to the user given they are in the 
+    Display the administration interface to the user given they are in the
     a group with the correct permissions to access it
     """
 
@@ -124,12 +123,26 @@ class AdministrationView(LoginRequiredMixin, UserPassesTestMixin, ReactTemplateV
             raise e
         # request.user.locale
         return JsonResponse(data)
-    
+
     def test_func(self):
-        return self.request.user.groups.filter(name='Teacher').exists()
-
-
+        return self.request.user.groups.filter(name="Teacher").exists()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
         return context
+
+
+class StudentAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
+    """
+    Return students as a JSON response, supports pagination
+    """
+
+    template_name = "impactadmin/administration.html"
+    react_component = "administration.jsx"
+
+    def get(self, request):
+        data = {"a": "b"}
+        return JsonResponse(data)
+
+    def test_func(self):
+        return self.request.user.groups.filter(name="Teacher").exists()
