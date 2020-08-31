@@ -1,0 +1,28 @@
+version: '2.0'
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  web:
+    build: .
+    container_name: web
+    ports:
+    - "8000:8000"
+    volumes:
+    - .:/code
+    links:
+    - redis
+    - postgres
+    depends_on:
+    - redis
+    - postgres

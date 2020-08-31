@@ -109,6 +109,15 @@ DATABASES = {
         'PORT': '',
     },
 }
+if (os.environ.get("RUNNING_DOCKER", None) is not None):
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'postgres',
+        'PORT': '5432',
+    }
 
 if (os.environ.get("DATABASE_URL", None) is not None):
     DATABASES['default'] = dj_database_url.config(ssl_require=True) 
