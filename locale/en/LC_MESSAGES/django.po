@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-22 23:40+0000\n"
+"POT-Creation-Date: 2020-08-30 23:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: impactadmin/templates/admin/app_list.html:8
+#: impact/settings.py:187
+msgid "English"
+msgstr ""
+
+#: impact/settings.py:188
+msgid "French"
+msgstr ""
+
+#: impactadmin/admin.py:24
+msgid "Personal info"
+msgstr ""
+
+#: impactadmin/admin.py:34
+msgid "Permissions"
+msgstr ""
+
+#: impactadmin/admin.py:45
+msgid "Important dates"
+msgstr ""
+
+#: impactadmin/admin.py:46
+msgid "Information"
+msgstr ""
+
+#: impactadmin/templates/admin-unused/app_list.html:24
 #, python-format
 msgid "Models in the %(name)s application"
 msgstr ""
 
-#: impactadmin/templates/admin/app_list.html:11
+#: impactadmin/templates/admin-unused/app_list.html:27
 #, fuzzy, python-format
 #| msgid ""
 #| "\n"
@@ -35,12 +59,12 @@ msgstr ""
 #| "          "
 msgid ""
 "\n"
-"                %(counter)s object\n"
-"              "
+"            %(counter)s model\n"
+"          "
 msgid_plural ""
 "\n"
-"                %(counter)s objects\n"
-"              "
+"            %(counter)s models\n"
+"          "
 msgstr[0] ""
 "\n"
 "            There is only one object.\n"
@@ -50,50 +74,111 @@ msgstr[1] ""
 "            There are %(counter)s objects.\n"
 "          "
 
-#: impactadmin/templates/admin/app_list.html:29
+#: impactadmin/templates/admin-unused/app_list.html:56
 msgid "Add"
 msgstr ""
 
-#: impactadmin/templates/admin/app_list.html:36
+#: impactadmin/templates/admin-unused/app_list.html:63
 msgid "View"
 msgstr ""
 
-#: impactadmin/templates/admin/app_list.html:38
+#: impactadmin/templates/admin-unused/app_list.html:65
 msgid "Change"
 msgstr ""
 
-#: impactadmin/templates/admin/app_list.html:49
+#: impactadmin/templates/admin-unused/app_list.html:109
 msgid "You don’t have permission to view or edit anything."
 msgstr ""
 
-#: impactadmin/templates/admin/index.html:23
+#: impactadmin/templates/admin-unused/change_list_results.html:17
+msgid "Remove from sorting"
+msgstr ""
+
+#: impactadmin/templates/admin-unused/change_list_results.html:18
+#, python-format
+msgid "Sorting priority: %(priority_number)s"
+msgstr ""
+
+#: impactadmin/templates/admin-unused/change_list_results.html:19
+msgid "Toggle sorting"
+msgstr ""
+
+#: impactadmin/templates/admin-unused/index.html:23
 msgid "Recent actions"
 msgstr ""
 
-#: impactadmin/templates/admin/index.html:24
+#: impactadmin/templates/admin-unused/index.html:24
 msgid "My actions"
 msgstr ""
 
-#: impactadmin/templates/admin/index.html:28
+#: impactadmin/templates/admin-unused/index.html:28
 msgid "None available"
 msgstr ""
 
-#: impactadmin/templates/admin/index.html:42
+#: impactadmin/templates/admin-unused/index.html:42
 msgid "Unknown content"
 msgstr ""
 
-#: impactchat/chat_consumers/notification_helper.py:20
+#: impactadmin/templates/admin-unused/submit_line.html:6
+msgid "Delete"
+msgstr ""
+
+#: impactadmin/templates/admin-unused/submit_line.html:8
+msgid "Save as new"
+msgstr ""
+
+#: impactadmin/templates/admin-unused/submit_line.html:9
+msgid "Save and add another"
+msgstr ""
+
+#: impactadmin/templates/admin-unused/submit_line.html:10
+msgid "Save and continue editing"
+msgstr ""
+
+#: impactadmin/templates/admin-unused/submit_line.html:10
+msgid "Save and view"
+msgstr ""
+
+#: impactadmin/templates/admin-unused/submit_line.html:11
+msgid "Save"
+msgstr ""
+
+#: impactadmin/templates/admin-unused/submit_line.html:12
+msgid "Close"
+msgstr ""
+
+#: impactadmin/views.py:155
+msgid "students"
+msgstr "Students"
+
+#: impactadmin/views.py:159
+msgid "teachers"
+msgstr "Teachers"
+
+#: impactadmin/views.py:163
+msgid "classes"
+msgstr "Classes"
+
+#: impactadmin/views.py:167
+msgid "parents"
+msgstr "Parents"
+
+#: impactadmin/views.py:171
+msgid "staff"
+msgstr "Staff"
+
+#: impactchat/chat_consumers/notification_helper.py:27
 msgid "You can not use this name to create a new channel"
 msgstr ""
 
-#: impactchat/chat_consumers/notification_helper.py:24
+#: impactchat/chat_consumers/notification_helper.py:31
 msgid "Channel successfuly created"
 msgstr ""
 
-#: impactchat/chat_consumers/notification_helper.py:29
+#: impactchat/chat_consumers/notification_helper.py:36
 msgid "An error occured when deleting one or more channels"
 msgstr ""
 
-#: impactchat/chat_consumers/notification_helper.py:33
+#: impactchat/chat_consumers/notification_helper.py:40
 msgid "Channel(s) successfuly deleted"
 msgstr ""

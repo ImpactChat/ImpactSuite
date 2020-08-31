@@ -24,20 +24,20 @@ class NotificationLevel(str, Enum):
 
 messages = {
     "channel.new.error.name_taken": {
-        "message": "You can not use this name to create a new channel",
+        "message": _("You can not use this name to create a new channel"),
         "severity": NotificationLevel.ERROR
     },
     "channel.new.success": {
-        "message": "Channel successfuly created",
+        "message": _("Channel successfuly created"),
         "severity": NotificationLevel.SUCCESS
     },
 
     "channel.remove.error": {
-        "message": "An error occured when deleting one or more channels",
+        "message": _("An error occured when deleting one or more channels"),
         "severity": NotificationLevel.ERROR
     },
     "channel.remove.success": {
-        "message": "Channel(s) successfuly deleted",
+        "message": _("Channel(s) successfuly deleted"),
         "severity": NotificationLevel.SUCCESS
     }
 }
@@ -50,7 +50,7 @@ class NotificationProvider:
     async def send(self, channel, data):
         log.info(f"Sending notification {data} to channels")
         print(f"Lang: {translation.get_language()}")
-        data['message'] = str(_(data['message']))
+        data['message'] = str(data['message'])
         await channel.send(text_data=dumps(data))
 
     async def send_message(self, channel, message,

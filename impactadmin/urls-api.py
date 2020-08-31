@@ -17,8 +17,8 @@ from django.urls import path
 from django.views.generic.base import RedirectView
 from django.urls import reverse_lazy
 
-from .views import StudentAPIView
+from .views import AdministrationAPIView
 
 urlpatterns = [
-    path('students/',   StudentAPIView.as_view(), name="students"),
+    path('students/',   AdministrationAPIView.as_view(), name="get"),
 ]

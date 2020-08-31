@@ -7,22 +7,43 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
+from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import translation
 from django.utils.decorators import method_decorator
+from django.utils import translation
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import View
 
 from django_react_views.views import ReactTemplateView
 
-from .models import Student
+from .models import Student, User
 
 # pylint: disable=no-member
+student_type = ContentType.objects.get(app_label="impactadmin", model="student")
+teacher_type = ContentType.objects.get(app_label="impactadmin", model="teacher")
+staff_type = ContentType.objects.get(app_label="impactadmin", model="staff")
+parent_type = ContentType.objects.get(app_label="impactadmin", model="parent")
+class_type = ContentType.objects.get(app_label="impactadmin", model="class")
+
+types = {
+    "student": student_type,
+    "teacher": teacher_type,
+    "staff": staff_type,
+    "parent": parent_type,
+    "class": class_type,
+}
+
 
 def can_administer(request):
-    return request.user.role == "teacher" or request.user.role == "staff"
+    teacher_type = ContentType.objects.get(app_label="impactadmin", model="teacher")
+    staff_type = ContentType.objects.get(app_label="impactadmin", model="staff")
+    return (
+        request.user.user_role == teacher_type or request.user.user_role == staff_type
+    )
 
 
 @method_decorator(ensure_csrf_cookie, name="dispatch")
@@ -58,6 +79,7 @@ class LoginView(ReactTemplateView, UserPassesTestMixin):
         else:
             messages.warning(request, "Incorrect username or password")
             return redirect("impactadmin:login")
+
 
 class LogoutView(View):
     """
@@ -138,10 +160,45 @@ class AdministrationView(LoginRequiredMixin, UserPassesTestMixin, ReactTemplateV
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
+        translation.activate(self.request.user.locale)
+        context["props"] = {
+            "models": [
+                {
+                    "name": _("students"),
+                    "api-name": "student",
+                    "count": User.objects.filter(user_role=student_type).count(),
+                    "api-link:get": reverse_lazy("impactadmin-api:get"),
+                },
+                {
+                    "name": _("teachers"),
+                    "api-name": "teacher",
+                    "count": User.objects.filter(user_role=teacher_type).count(),
+                    "api-link:get": reverse_lazy("impactadmin-api:get"),
+                },
+                {
+                    "name": _("classes"),
+                    "api-name": "class",
+                    "count": User.objects.filter(user_role=class_type).count(),
+                    "api-link:get": reverse_lazy("impactadmin-api:get"),
+                },
+                {
+                    "name": _("parents"),
+                    "api-name": "parent",
+                    "count": User.objects.filter(user_role=parent_type).count(),
+                    "api-link:get": reverse_lazy("impactadmin-api:get"),
+                },
+                {
+                    "name": _("staff"),
+                    "api-name": "staff",
+                    "count": User.objects.filter(user_role=staff_type).count(),
+                    "api-link:get": reverse_lazy("impactadmin-api:get"),
+                },
+            ]
+        }
         return context
 
 
-class StudentAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
+class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
     """
     Return students as a JSON response, supports pagination
     """
@@ -150,24 +207,26 @@ class StudentAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
     react_component = "administration.jsx"
 
     def get(self, request):
-        p = Paginator(Student.objects.all(), 2)
+        qs = User.objects.filter(user_role=types[request.GET.get("type")])
+        p = Paginator(qs, request.GET.get("max", 10))
         student_data = []
-        count = Student.objects.count()
+        count = qs.count()
         try:
-            page = p.page(request.GET.get('page', 1))
+            page = p.page(request.GET.get("page", 1))
             for student in page.object_list:
-                student_data.append(student.user.getJSON())
+                student_data.append(student.getJSON())
+                student_data[-1]["full name"] = student.get_full_name()
+                student_data[-1]["pk"] = student.pk
         except django.core.paginator.EmptyPage:
             student_data = [None]
-    
+
         data = {
-            'students': student_data,
-            'count': count,
-            'min_page': 1,
-            'max_page': p.num_pages,
+            "items": student_data,
+            "count": count,
+            "min_page": 1,
+            "max_page": p.num_pages,
         }
 
-        
         return JsonResponse(data)
 
     def test_func(self):

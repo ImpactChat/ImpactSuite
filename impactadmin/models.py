@@ -37,11 +37,6 @@ class User(AbstractUser):
                               default="en",
                               choices=settings.LANGUAGES)
 
-    # role = models.CharField(max_length=7,
-    #                         choices=USER_ROLE_CHOICES,
-    #                         default="student")
-    # roles = models.ManyToManyField(Role)
-
     user_role = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
     object_id = models.PositiveIntegerField(null=True)
     role_data = GenericForeignKey('user_role', 'object_id')

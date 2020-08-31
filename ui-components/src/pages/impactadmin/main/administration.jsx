@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Lock from '@material-ui/icons/Lock';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -39,31 +39,8 @@ export const useStyles = makeStyles((theme) => ({
 export default function AdminPage(props) {
     const classes = useStyles();
     
-    const { t, i18n } = useTranslation();
+    // const { t, i18n } = useTranslation();
 
-    const [expanded, setExpanded] = useState(false);
-    const [expandedFinished, setExpandedFinished] = useState(false);
-
-    const expand = () => {
-        // Closing
-        if (expanded)
-        {
-            setExpandedFinished(false);
-        } else {
-            setTimeout(function() { setExpandedFinished(!expanded); }, 1500);
-        }
-        setExpanded(!expanded);
-    }
-
-
-    const headers = ["Name", "Age", "Class"]; 
-    const data = [
-        ['Jonh Doe', 14, "2V"],
-        ['Jane Doe', 14, "2V"],
-        ['Alice',    15, "2V"],
-        ['Bob',      15, "2V"],
-        ['Charles',  14, "2V"],
-    ];
 
     return (
         <>
@@ -72,19 +49,17 @@ export default function AdminPage(props) {
                 <CssBaseline />
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
-                        <AccountCircleIcon className={classes.avatar} />
+                        <Lock className={null} />
                     </Avatar>
-                    <Typography component="h1" variant="h4" className={classes.welcomeText}>
-                        {t('welcome')}, {window.props.settings.username}
-                    </Typography>
                 </div>
                 <Divider />
 
                 <Box display="flex" flexDirection="row" p={1} m={1} flexWrap="wrap" alignItems="center">
-                    <AdminCard name="Students" count={300} />
-                    <AdminCard name="Teachers" count={48}  />
-                    <AdminCard name="Classes"  count={16}  />
-                    <AdminCard name="Students" count={200} />
+                    {
+                        window.props.models.map((val, i) => (
+                            <AdminCard key={val.name} name={val.name} count={val.count} type={val['api-name']} source={val['api-link:get']}/>
+                        ))
+                    }
                 </Box>
 
             </Container>
