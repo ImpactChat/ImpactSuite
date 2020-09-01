@@ -5,6 +5,8 @@ from ...models import User
 from impactchat.models import Channel
 from django.core.management.base import BaseCommand, CommandError
 
+#pylint: disable=no-member
+
 class Command(BaseCommand):
     help = 'Migrate then start the server'
 
