@@ -21,4 +21,4 @@ RUN apt-get update && apt-get install -y gettext
 RUN python manage.py compilemessages
 RUN python manage.py collectstatic
 
-ENTRYPOINT [ "sh", "docker-entrypoint.sh" ]
+CMD [ "python", "manage.py", "start" ]
