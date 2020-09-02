@@ -38,21 +38,9 @@ export const useStyles = makeStyles((theme) => ({
              
 }));
 function getSteps() {
-    return ['Upload', 'Proccess', 'Create'];
+    return ['Upload', 'Proccess', 'Create', 'Done'];
 }  
 
-function getStepContent(step) {
-    switch (step) {
-      case 0:
-        return `Upload a file to the server`;
-      case 1:
-        return 'The server is proccessing your file.';
-      case 2:
-        return `The server is creating the models from your file`;
-      default:
-        return 'Unknown step';
-    }
-}
   
 
 export default function AddNew(props) {
@@ -73,11 +61,11 @@ export default function AddNew(props) {
 
         var formElement = document.querySelector("form");
         var formData = new FormData(formElement);
+        formData.append("type", props.name)
         var request = new XMLHttpRequest();
         request.addEventListener("load", handleResponse);
+        request.addEventListener("loadend", () => handleNext());
         request.upload.addEventListener("progress", progressFunction, false);  
-        request.addEventListener("progress", notLoadprogressFunction);
-        request.addEventListener("loadend", loadendprogressFunction);  
 
         request.open("POST", props.url);
         request.setRequestHeader('X-CSRFToken', getCookie('csrftoken'))
@@ -101,22 +89,66 @@ export default function AddNew(props) {
         {
             handleNext();
         }
-    };
+    };      
 
-    const notLoadprogressFunction = (evt) => {  
-        console.log("notLoadprogressFunction")
-    };
-    const loadendprogressFunction = (evt) => {  
-        console.log("loadendprogressFunction")
-    };
+    const getStepContent = (step) => {
+      switch (step) {
+        case 0:
+          return (
+            <>
+              <Typography variant="body1">
+                Upload a file to the server.
+                Description of file content/requirement
+              </Typography>
+              <form id="form">
+                  <input type="file" name="fileupload" id="fileupload" />
+                  <Button onClick={handleSubmit} variant="outlined" color="default">
+                  Submit
+                  </Button>
+              </form>
+              <LinearProgress variant="determinate" value={progress} />
+            </>
+          );
+        case 1:
+          return (
+            <>
+              <Typography variant="body1">
+                The server is proccessing your file.
+              </Typography>
 
-      
+              <LinearProgress />
+            </>
+          );
+        case 2:
+          return (
+            <>
+              <Typography variant="body1">
+                The server is creating models from your file
+              </Typography>
+            </>
+          );
+        case 3:
+          return (
+            <>
+              <Typography variant="body1">
+                Done!
+              </Typography>
+
+              <Button variant="outlined" color="default" onClick={handleReset}>
+                Reset
+              </Button>
+            </>
+          );
+        default:
+          return 'Unknown step';
+      }
+  };
+  
     
     const { t, i18n } = useTranslation();
 
     const steps = getSteps();
     const handleNext = () => {
-        console.log("next")
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       };
     
@@ -126,27 +158,21 @@ export default function AddNew(props) {
     
       const handleReset = () => {
         setActiveStep(0);
+        setProgress(0);
       };
     
   
 
     return (
         <>
-            <form id="form">
-                <input type="file" name="fileupload" id="fileupload" />
-                <Button onClick={handleSubmit} variant="outlined" color="default">
-                Submit
-                </Button>
-            </form>
-             <LinearProgress variant="determinate" value={progress} />
 
-             <div className={classes.root}>
+        <div className={classes.root}>
       <Stepper activeStep={activeStep} orientation="vertical">
         {steps.map((label, index) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
             <StepContent>
-              <Typography>{getStepContent(index)}</Typography>
+              {getStepContent(index)}
             </StepContent>
           </Step>
         ))}

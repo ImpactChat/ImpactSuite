@@ -1,3 +1,5 @@
+import codecs
+import csv
 from json import loads
 
 import django
@@ -37,6 +39,7 @@ types = {
     "class": class_type,
 }
 
+# Note: Table headers are rewritten here to prevent accidental data leakage
 relevant_models = {
     "models": [
         {
@@ -48,6 +51,10 @@ relevant_models = {
                 {
                     "actual": "username",
                     "display": "Username"
+                },
+                {
+                    "actual": "name",
+                    "display": "Full name"
                 },
                 {
                     "actual": "avatar",
@@ -278,10 +285,13 @@ class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
         count = qs.count()
         try:
             page = p.page(request.GET.get("page", 1))
-            for student in page.object_list:
-                objects.append(student.getJSON())
-                objects[-1]["full name"] = student.get_full_name()
-                objects[-1]["pk"] = student.pk
+            for role in page.object_list:
+                # try to get the more customized serializer, else fallback 
+                # on default one
+                try:
+                    objects.append(role.role_data.getJSON())
+                except AttributeError:
+                    objects.append(role.getJSON())
         except django.core.paginator.EmptyPage:
             objects = [None]
 
@@ -296,7 +306,30 @@ class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
     def post(self, request):
-        print(request.FILES)
+        f = request.FILES.get("fileupload")
+        t = request.POST.get("type")
+
+        if t == "student":
+            csvfile = csv.DictReader(codecs.iterdecode(f, 'utf-8'))
+            first_name = ['First Name', 'First name']
+            last_name = ['Last Name', 'Last name']
+            
+            for line in csvfile:
+                u = User.objects.create_user(line['Username'], line['Email'], "hello")
+                s = Student.objects.create()
+
+                for key in line:
+                    if key.lstrip('\ufeff') in first_name:
+                        fname = line[key]
+                        u.first_name = fname
+                    elif key.lstrip('\ufeff') in last_name:
+                        lname = line[key]
+                        u.last_name = lname
+
+                u.role_data = s
+                u.save()
+                
+
         return JsonResponse({
             "sucess": "yes"
         })

@@ -80,7 +80,7 @@ export default function AdminPage(props) {
 
 
     const AddWidget = (
-        <AddNewWidget url={selectedModel['api-link:get']} />
+        <AddNewWidget url={selectedModel['api-link:get']} name={selectedModel['api-name']} test={selectedModel} />
     );
     const ExploreWidget = (
         <DenseTable model={selectedModel} test={selectedModel} type={selectedModel['api-name']} headers={selectedModel['headers']} source={selectedModel['api-link:get']} />

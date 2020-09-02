@@ -21,7 +21,8 @@ class UserTestCase(TestCase):
 
         self.assertJSONEqual(json.dumps(u.getJSON()), {
             "username": 'user',
-            "avatar": "U"
+            "avatar": "U",
+            "pk": u.pk
         })
 
 class TestProfile(TestCase):

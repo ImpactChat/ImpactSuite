@@ -5,6 +5,11 @@
    - [Using docker](#installation-with-docker)
    - [Manually](#manual-installation)
 
+## TODO
+ - Fix pagination
+ - Make uploading users more fault tolerant
+ - ...
+
 ## Installation
 
 ### Installation with docker

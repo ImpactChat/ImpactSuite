@@ -40,7 +40,8 @@ class MessageTestCase(TestCase):
                     'content': "Message1",
                     'author': {
                         "username": "user",
-                        "avatar": "U"
+                        "avatar": "U",
+                        "pk": u.pk
                     },
                     'timestamp': str(timestamp1),
                     'pk': pk1
@@ -50,7 +51,8 @@ class MessageTestCase(TestCase):
                     'content': "Message2",
                     'author': {
                         "username": "user",
-                        "avatar": "U"
+                        "avatar": "U",
+                        "pk": u.pk
                     },
                     'timestamp': str(timestamp2),
                     'pk': pk2

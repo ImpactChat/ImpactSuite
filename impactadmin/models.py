@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
 
@@ -22,7 +22,7 @@ class User(AbstractUser):
 
 
     def getJSON(self):
-        return {"username": self.username, "avatar": "U"}
+        return {"username": self.username, "avatar": "U", "pk": self.pk}
 
 
 class GetRelatedUserMixin(object):
@@ -40,8 +40,10 @@ class Student(GetRelatedUserMixin, models.Model):
     Represents a student in the school
     """
 
+    def getJSON(self):
+        return {"username": self.user.username, "name": self.user.get_full_name(), "avatar": "U", "pk": self.user.pk} 
+
     def __str__(self):
-        print(self.user)
         return f"student-{self.user.username}-{self.pk}"
 
 
@@ -96,3 +98,8 @@ class Classroom(models.Model):
     room_name = models.CharField(max_length=128, 
                                  verbose_name="Room name",
                                  help_text="The name of the room, this is commonly the room number (ex: 216) or name (ex: Entrance)")
+
+@receiver(pre_delete)
+def delete_related(sender, instance, **kwargs):
+    if sender == User:
+        instance.role_data.delete()
