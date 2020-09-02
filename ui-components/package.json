@@ -52,7 +52,8 @@
     "build-web": "webpack",
     "build-web-prod": "webpack --mode production",
     "watch-web": "webpack --watch",
-    "babel": "babel"
+    "babel": "babel",
+    "electron": "electron ."
   },
   "eslintConfig": {
     "extends": "react-app"

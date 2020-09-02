@@ -57,7 +57,7 @@ export default function AdminPage(props) {
                 <Box display="flex" flexDirection="row" p={1} m={1} flexWrap="wrap" alignItems="center">
                     {
                         window.props.models.map((val, i) => (
-                            <AdminCard key={val.name} name={val.name} count={val.count} type={val['api-name']} source={val['api-link:get']}/>
+                            <AdminCard key={val.name} name={val.name} count={val.count} headers={val.headers} type={val['api-name']} source={val['api-link:get']}/>
                         ))
                     }
                 </Box>

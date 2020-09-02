@@ -24,6 +24,7 @@ class DenseTable extends React.Component {
             data: {},
             page: 0,
             rowsPerPage: 5,
+            type: props.type
         };
         this.getData = this.getData.bind(this);
     }
@@ -32,8 +33,21 @@ class DenseTable extends React.Component {
         this.getData();
     }
 
+    componentDidUpdate() {
+        if (this.props.test !== undefined)
+        {
+            if (this.props.test['api-name'] !== this.state.type)
+            {
+                this.setState({type: this.props.test['api-name']})
+                this.getData();
+            }
+        }
+    }
+
     getData() {
-        
+        this.setState({
+            isLoaded: false,
+        })
         const source = this.props.source;
         const full_source = window.location.protocol + "//" + window.location.host + source;
 
@@ -59,12 +73,12 @@ class DenseTable extends React.Component {
             ))
     }
 
-    componentDidUpdate() {
-        // this.getData();
-    }
-
     render() {
         // const { classes } = this.props;
+        // if (this.props.test['api-name'] !== this.state.type)
+        // {
+        //     this.getData()
+        // }
 
         if (!this.state.isLoaded) {
             return <LinearProgress />
@@ -114,7 +128,6 @@ class DenseTable extends React.Component {
                                         <TableCell key={val.actual} align={i === 0 ? "left" : "right"} component={i === 0 ? "th" : "td"} scope={i === 0 ? "row" : undefined}>
                                             {data[val.actual]}
                                         </TableCell>
-    
                                     ))
                                 }
                             </TableRow>

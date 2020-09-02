@@ -17,7 +17,7 @@ from django.urls import path
 from django.views.generic.base import RedirectView
 from django.urls import reverse_lazy
 
-from .views import AdministrationView, DashboardView, LoginView, LogoutView, ProfileView
+from .views import AdministrationAdvancedView, AdministrationView, DashboardView, LoginView, LogoutView, ProfileView
 
 urlpatterns = [
     path('',            RedirectView.as_view(
@@ -29,5 +29,6 @@ urlpatterns = [
     path('dashboard/', DashboardView.as_view(), name="dashboard"),
     path('profile/',   ProfileView.as_view(), name="profile"),
 
+    path('administration/detail/',   AdministrationAdvancedView.as_view(), name="detail-admin"),
     path('administration/',   AdministrationView.as_view(), name="administration"),
 ]

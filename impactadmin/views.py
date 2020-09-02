@@ -37,6 +37,98 @@ types = {
     "class": class_type,
 }
 
+relevant_models = {
+    "models": [
+        {
+            "name": _("students"),
+            "api-name": "student",
+            "count": User.objects.filter(user_role=student_type).count(),
+            "api-link:get": reverse_lazy("impactadmin-api:get"),
+            "headers": [
+                {
+                    "actual": "username",
+                    "display": "Username"
+                },
+                {
+                    "actual": "avatar",
+                    "display": "Avatar"
+                },
+            ]
+        },
+        {
+            "name": _("teachers"),
+            "api-name": "teacher",
+            "count": User.objects.filter(user_role=teacher_type).count(),
+            "api-link:get": reverse_lazy("impactadmin-api:get"),
+            "headers": [
+                {
+                    "actual": "username",
+                    "display": "Username"
+                },
+                {
+                    "actual": "avatar",
+                    "display": "Avatar"
+                },
+            ]
+
+        },
+        {
+            "name": _("classes"),
+            "api-name": "class",
+            "count": User.objects.filter(user_role=class_type).count(),
+            "api-link:get": reverse_lazy("impactadmin-api:get"),
+            "headers": [
+                {
+                    "actual": "name",
+                    "display": "Name"
+                },
+                {
+                    "actual": "student-count",
+                    "display": "Student Count"
+                },
+                {
+                    "actual": "teacher-count",
+                    "display": "Teacher Count"
+                },
+            ]
+        },
+        {
+            "name": _("parents"),
+            "api-name": "parent",
+            "count": User.objects.filter(user_role=parent_type).count(),
+            "api-link:get": reverse_lazy("impactadmin-api:get"),
+            "headers": [
+                {
+                    "actual": "username",
+                    "display": "Username"
+                },
+                {
+                    "actual": "avatar",
+                    "display": "Avatar"
+                },
+            ]
+        },
+        {
+            "name": _("staff"),
+            "api-name": "staff",
+            "count": User.objects.filter(user_role=staff_type).count(),
+            "api-link:get": reverse_lazy("impactadmin-api:get"),
+            "headers": [
+                {
+                    "actual": "username",
+                    "display": "Username"
+                },
+                {
+                    "actual": "avatar",
+                    "display": "Avatar"
+                },
+            ]
+        },
+    ]
+}
+
+class CannotSaveUser(Exception):
+    pass
 
 def can_administer(request):
     teacher_type = ContentType.objects.get(app_label="impactadmin", model="teacher")
@@ -145,15 +237,24 @@ class AdministrationView(LoginRequiredMixin, UserPassesTestMixin, ReactTemplateV
     template_name = "impactadmin/administration.html"
     react_component = "administration.jsx"
 
-    def post(self, request):
-        data = loads(request.body.decode("UTF-8"))
-        try:
-            request.user.locale = data["language"]
-            request.user.save()
-        except Exception as e:
-            raise e
-        # request.user.locale
-        return JsonResponse(data)
+    def test_func(self):
+        return can_administer(self.request)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data()
+        translation.activate(self.request.user.locale)
+        context["props"] = relevant_models
+        return context
+
+@method_decorator(ensure_csrf_cookie, name="dispatch")
+class AdministrationAdvancedView(LoginRequiredMixin, UserPassesTestMixin, ReactTemplateView):
+    """
+    Display the administration interface to the user given they are in the
+    a group with the correct permissions to access it
+    """
+
+    template_name = "impactadmin/administration.html"
+    react_component = "advanced.jsx"
 
     def test_func(self):
         return can_administer(self.request)
@@ -161,40 +262,7 @@ class AdministrationView(LoginRequiredMixin, UserPassesTestMixin, ReactTemplateV
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
         translation.activate(self.request.user.locale)
-        context["props"] = {
-            "models": [
-                {
-                    "name": _("students"),
-                    "api-name": "student",
-                    "count": User.objects.filter(user_role=student_type).count(),
-                    "api-link:get": reverse_lazy("impactadmin-api:get"),
-                },
-                {
-                    "name": _("teachers"),
-                    "api-name": "teacher",
-                    "count": User.objects.filter(user_role=teacher_type).count(),
-                    "api-link:get": reverse_lazy("impactadmin-api:get"),
-                },
-                {
-                    "name": _("classes"),
-                    "api-name": "class",
-                    "count": User.objects.filter(user_role=class_type).count(),
-                    "api-link:get": reverse_lazy("impactadmin-api:get"),
-                },
-                {
-                    "name": _("parents"),
-                    "api-name": "parent",
-                    "count": User.objects.filter(user_role=parent_type).count(),
-                    "api-link:get": reverse_lazy("impactadmin-api:get"),
-                },
-                {
-                    "name": _("staff"),
-                    "api-name": "staff",
-                    "count": User.objects.filter(user_role=staff_type).count(),
-                    "api-link:get": reverse_lazy("impactadmin-api:get"),
-                },
-            ]
-        }
+        context["props"] = relevant_models
         return context
 
 
@@ -209,19 +277,19 @@ class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         qs = User.objects.filter(user_role=types[request.GET.get("type")])
         p = Paginator(qs, request.GET.get("max", 10))
-        student_data = []
+        objects = []
         count = qs.count()
         try:
             page = p.page(request.GET.get("page", 1))
             for student in page.object_list:
-                student_data.append(student.getJSON())
-                student_data[-1]["full name"] = student.get_full_name()
-                student_data[-1]["pk"] = student.pk
+                objects.append(student.getJSON())
+                objects[-1]["full name"] = student.get_full_name()
+                objects[-1]["pk"] = student.pk
         except django.core.paginator.EmptyPage:
-            student_data = [None]
+            objects = [None]
 
         data = {
-            "items": student_data,
+            "items": objects,
             "count": count,
             "min_page": 1,
             "max_page": p.num_pages,

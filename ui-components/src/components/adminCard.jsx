@@ -66,20 +66,7 @@ export default function AdminCard(properties) {
     }
 
 
-    const headers = [
-        {
-            "display": "Username",
-            "actual": "username",
-        },
-        {
-            "display": "Full name",
-            "actual": "full name",
-        },
-        {
-            "display": "Avatar",
-            "actual": "avatar",
-        },
-    ];
+    const headers = properties.headers;
     const data = [
         ['Jonh Doe', 14, "2V"],
         ['Jane Doe', 14, "2V"],
