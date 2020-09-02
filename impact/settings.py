@@ -200,6 +200,7 @@ LANGUAGES = [
 LOGGING = {}
 with open('impact/config/logconfig.json') as f:
     LOGGING = load(f)
+os.makedirs(BASE_DIR / "logs", exist_ok=True)
 
 JAZZMIN_SETTINGS = {
     'user_avatar': False
