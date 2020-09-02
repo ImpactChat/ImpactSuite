@@ -24,8 +24,11 @@
         "file": {
             "level": "DEBUG",
             "formatter": "verbose",
-            "class": "logging.FileHandler",
-            "filename": "django-log.log"
+            "filename": "logs/django-log.log",
+
+            "class": "logging.handlers.RotatingFileHandler",
+            "backupCount": 10, 
+            "maxBytes": 5242880
         }
 
     },
