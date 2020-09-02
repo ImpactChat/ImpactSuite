@@ -34,5 +34,5 @@ try:
         path('', include(('impactadmin.urls', 'impactadmin'),
                         namespace='impactadmin'))
     ]
-except:
-    pass
+except Exception as e:
+    print(e)

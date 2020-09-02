@@ -266,14 +266,11 @@ class AdministrationAdvancedView(LoginRequiredMixin, UserPassesTestMixin, ReactT
         return context
 
 
+@method_decorator(ensure_csrf_cookie, name="dispatch")
 class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
     """
     Return students as a JSON response, supports pagination
     """
-
-    template_name = "impactadmin/administration.html"
-    react_component = "administration.jsx"
-
     def get(self, request):
         qs = User.objects.filter(user_role=types[request.GET.get("type")])
         p = Paginator(qs, request.GET.get("max", 10))
@@ -297,5 +294,15 @@ class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
 
         return JsonResponse(data)
 
+
+    def post(self, request):
+        print(request.FILES)
+        return JsonResponse({
+            "sucess": "yes"
+        })
+
+
     def test_func(self):
         return can_administer(self.request)
+
+

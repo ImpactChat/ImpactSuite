@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 
 import AppBar from '../../../components/topAppBar.jsx';
 import DenseTable from '../../../components/denseTable.jsx';
+import AddNewWidget from '../../../components/AddNewWidget.jsx';
 
 import '../../../i18n/i18n.js';
 
@@ -79,7 +80,7 @@ export default function AdminPage(props) {
 
 
     const AddWidget = (
-        <CircularProgress />
+        <AddNewWidget url={selectedModel['api-link:get']} />
     );
     const ExploreWidget = (
         <DenseTable model={selectedModel} test={selectedModel} type={selectedModel['api-name']} headers={selectedModel['headers']} source={selectedModel['api-link:get']} />
