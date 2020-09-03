@@ -22,6 +22,12 @@ class User(AbstractUser):
 
 
     def getJSON(self):
+        """
+        Return a serialized representation of the user. Returns the username, avatar and pk
+        of the model.\n
+        Note: This should be used as a fallback, models with more data such as student or teacher
+        should implement a getJSON function aswell.
+        """
         return {"username": self.username, "avatar": "U", "pk": self.pk}
 
 
