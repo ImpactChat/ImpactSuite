@@ -83,7 +83,7 @@ export default function AdminPage(props) {
         <AddNewWidget url={selectedModel['api-link:get']} name={selectedModel['api-name']} test={selectedModel} />
     );
     const ExploreWidget = (
-        <DenseTable model={selectedModel} test={selectedModel} type={selectedModel['api-name']} headers={selectedModel['headers']} source={selectedModel['api-link:get']} />
+        <DenseTable rowsPerPage={20} model={selectedModel} test={selectedModel} type={selectedModel['api-name']} headers={selectedModel['headers']} source={selectedModel['api-link:get']} />
     );
     const ExportWidget = (
         <CircularProgress />

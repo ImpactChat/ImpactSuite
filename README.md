@@ -6,9 +6,8 @@
    - [Manually](#manual-installation)
 
 ## TODO
- - Fix pagination
  - Make uploading users more fault tolerant
- - ...
+ - Add a descrition of file content/requirements
 
 ## Installation
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,10 +11,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 
-// const styles = theme => ({
-//     table: {
-//     },
-// });
 class DenseTable extends React.Component {
     constructor(props) {
         super(props);
@@ -44,7 +39,7 @@ class DenseTable extends React.Component {
         }
     }
 
-    getData() {
+    getData(page) {
         this.setState({
             isLoaded: false,
         })
@@ -52,8 +47,8 @@ class DenseTable extends React.Component {
         const full_source = window.location.protocol + "//" + window.location.host + source;
 
         const get_params = {
-            "page": (this.state.page + 1).toString(),
-            "max": this.state.rowsPerPage,
+            "page": page + 1 || (this.state.page + 1).toString(),
+            "max": this.props.rowsPerPage || this.state.rowsPerPage,
             "type": this.props.type
         }
 
@@ -74,32 +69,19 @@ class DenseTable extends React.Component {
     }
 
     render() {
-        // const { classes } = this.props;
-        // if (this.props.test['api-name'] !== this.state.type)
-        // {
-        //     this.getData()
-        // }
-
         if (!this.state.isLoaded) {
             return <LinearProgress />
 
         }
         const headers = this.props.headers;
         const rows = this.props.data;
-
+        
         const handleChangePage = (event, newPage) => {
             this.setState({page: newPage})
-            this.getData()
-        };
-        
-        // const handleChangeRowsPerPage = (event) => {
-        //     console.log("Row per page change to", parseInt(event.target.value, 10))
-        //     this.setState({rowsPerPage:  parseInt(event.target.value, 10)});
-        //     this.setState({page: 0})
-        //     console.log("Changed to", this.state.rowsPerPage);
-        //     this.getData()
-        // };
-        
+            this.getData(newPage)
+        };        
+
+        console.log(this.props.rowsPerPage)
 
 
         return (
@@ -135,13 +117,12 @@ class DenseTable extends React.Component {
                     </TableBody>
                 </Table>
                 <TablePagination
-                    rowsPerPageOptions={[this.state.rowsPerPage]}
+                    rowsPerPageOptions={[this.props.rowsPerPage || this.state.rowsPerPage]}
                     component="div"
                     count={this.state.data.count}
-                    rowsPerPage={this.state.rowsPerPage}
+                    rowsPerPage={this.props.rowsPerPage || this.state.rowsPerPage}
                     page={this.state.page}
                     onChangePage={handleChangePage}
-                    // onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </TableContainer>
         );
@@ -151,7 +132,8 @@ class DenseTable extends React.Component {
 DenseTable.propTypes = {
     headers: PropTypes.arrayOf(PropTypes.object).isRequired,
     source: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
+    rowsPerPage: PropTypes.number
 };
 // export default withStyles(styles)(DenseTable);
 export default DenseTable;
