@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   message: {
       '& p': {
         marginTop: 0,
+        marginBottom: 0,
         wordBreak: 'break-word',
         overflowWrap: 'break-word'
       }
@@ -76,18 +77,13 @@ export default function Message(props) {
                         </Grid>
                         <Grid item container direction="column">
                             <Grid item>
-                                <Typography variant="subtitle1">
-                                    {props.username}
-                                </Typography>
+                                <Typography variant="subtitle1" style={{display: 'inline-block'}}>{props.username}&nbsp;-&nbsp;</Typography>
+                                <Typography variant="body2" style={{display: 'inline-block'}}>{offset}</Typography>
+
                             </Grid>
                             <Grid item xs className={classes.message}>
                                 <MDRenderer source={message} renderers={renderers} />
                             </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid container wrap="nowrap" spacing={2}>
-                        <Grid item xs>
-                            <Typography variant="body2" align="right">{offset}</Typography>
                         </Grid>
                     </Grid>
                 </Paper>
