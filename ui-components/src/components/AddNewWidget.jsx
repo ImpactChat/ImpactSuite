@@ -35,6 +35,9 @@ export const useStyles = makeStyles((theme) => ({
     resetContainer: {
         padding: theme.spacing(3),
     },
+    stepper: {
+      backgroundColor: "transparent"
+    }
              
 }));
 function getSteps() {
@@ -167,7 +170,7 @@ export default function AddNew(props) {
         <>
 
         <div className={classes.root}>
-      <Stepper activeStep={activeStep} orientation="vertical">
+      <Stepper activeStep={activeStep} orientation="vertical" className={classes.stepper}>
         {steps.map((label, index) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>

@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import AppBar from '../../../components/topAppBar.jsx';
 import DenseTable from '../../../components/denseTable.jsx';
 import AddNewWidget from '../../../components/AddNewWidget.jsx';
+import ExportModelWidget from '../../../components/ExportWidget.jsx';
 
 import '../../../i18n/i18n.js';
 
@@ -86,7 +87,7 @@ export default function AdminPage(props) {
         <DenseTable rowsPerPage={20} model={selectedModel} test={selectedModel} type={selectedModel['api-name']} headers={selectedModel['headers']} source={selectedModel['api-link:get']} />
     );
     const ExportWidget = (
-        <CircularProgress />
+        <ExportModelWidget link={selectedModel['download-link']} />
     );
 
     const widgets = [

@@ -3,6 +3,7 @@ import csv
 from json import loads
 
 import django
+from django.apps import apps
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -10,7 +11,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.contrib.contenttypes.models import ContentType
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import translation
@@ -47,6 +48,7 @@ relevant_models = {
             "api-name": "student",
             "count": User.objects.filter(user_role=student_type).count(),
             "api-link:get": reverse_lazy("impactadmin-api:get"),
+            "download-link": "/administration/download/student",
             "headers": [
                 {
                     "actual": "username",
@@ -67,6 +69,7 @@ relevant_models = {
             "api-name": "teacher",
             "count": User.objects.filter(user_role=teacher_type).count(),
             "api-link:get": reverse_lazy("impactadmin-api:get"),
+            "download-link": "/administration/download/teacher",
             "headers": [
                 {
                     "actual": "username",
@@ -84,6 +87,7 @@ relevant_models = {
             "api-name": "class",
             "count": User.objects.filter(user_role=class_type).count(),
             "api-link:get": reverse_lazy("impactadmin-api:get"),
+            "download-link": "/administration/download/class",
             "headers": [
                 {
                     "actual": "name",
@@ -104,6 +108,7 @@ relevant_models = {
             "api-name": "parent",
             "count": User.objects.filter(user_role=parent_type).count(),
             "api-link:get": reverse_lazy("impactadmin-api:get"),
+            "download-link": "/administration/download/parent",
             "headers": [
                 {
                     "actual": "username",
@@ -120,6 +125,7 @@ relevant_models = {
             "api-name": "staff",
             "count": User.objects.filter(user_role=staff_type).count(),
             "api-link:get": reverse_lazy("impactadmin-api:get"),
+            "download-link": "/administration/download/staff",
             "headers": [
                 {
                     "actual": "username",
@@ -339,3 +345,35 @@ class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
         return can_administer(self.request)
 
 
+class DownloadModelsView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        return can_administer(self.request)
+
+
+    def get(self, request, model):
+        model_class = apps.get_model(app_label="impactadmin",
+                                     model_name=model)
+
+        meta = model_class._meta
+        field_names = [field.name for field in meta.fields]
+        temp = [field.name for field in meta.fields]
+
+        user_meta = User._meta
+        user_field_names = [field.name for field in user_meta.fields]
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(meta)
+        writer = csv.writer(response)
+
+        temp.extend(user_field_names)
+        temp.pop(0)
+        writer.writerow(temp)
+        for obj in model_class.objects.all():
+            if obj.user is None:
+                continue
+
+            temp = [getattr(obj.user, field) for field in user_field_names]
+            temp.extend([getattr(obj, field) for field in field_names])
+            row = writer.writerow(temp)
+
+        return response

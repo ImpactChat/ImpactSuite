@@ -49,8 +49,8 @@ class Student(GetRelatedUserMixin, models.Model):
     def getJSON(self):
         return {"username": self.user.username, "name": self.user.get_full_name(), "avatar": "U", "pk": self.user.pk} 
 
-    def __str__(self):
-        return f"student-{self.user.username}-{self.pk}"
+    # def __str__(self):
+    #     return f"student-{self.user.username}-{self.pk}"
 
 
 class Teacher(GetRelatedUserMixin, models.Model):
