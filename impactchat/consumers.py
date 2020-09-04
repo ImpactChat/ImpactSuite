@@ -10,6 +10,7 @@ import django
 from .models import Message, Channel
 
 from .chat_consumers.notification_helper import NotificationProvider
+from .chat_consumers.chat_consumer import ChatConsumerMethods
 
 
 notif = NotificationProvider()
@@ -17,7 +18,7 @@ log = logging.getLogger(__name__)
 
 
 # pylint: disable=no-member
-class ChatConsumer(AsyncWebsocketConsumer):
+class ChatConsumer(AsyncWebsocketConsumer, ChatConsumerMethods):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
@@ -135,40 +136,3 @@ class ChatConsumer(AsyncWebsocketConsumer):
         else:
             log.warning(f"Unrecognixed type: {etype}")
 
-    # Receive message from room group
-    async def chat_new(self, event):
-        m = event['m']
-        await self.send(text_data=json.dumps({
-            'new_message': m
-        }))
-
-    async def chat_channel_new_success(self, event):
-        c = event['c']
-        await self.send(text_data=json.dumps({
-            'new_channel': c
-        }))
-
-    async def chat_channel_delete_success(self, event):
-        cs = event['cs']
-        await self.send(text_data=json.dumps({
-            'channels_deleted': cs
-        }))
-
-    @database_sync_to_async
-    def createMessage(self, channel_pk, message):
-        channel_obj = Channel.objects.get(pk=channel_pk)  # `get_or_create`?
-        m = Message.objects.create(channel=channel_obj,
-                                   content=message,
-                                   author=self.scope['user'])
-        return m
-
-    @database_sync_to_async
-    def createChannel(self, channel):
-        c = Channel.objects.create(name=channel)
-        return c
-
-    @database_sync_to_async
-    def deleteChannels(self, channels):
-        cs = Channel.objects.filter(pk__in=channels)
-        cs.update(visible=False)
-        return [i.getJSON() for i in cs]

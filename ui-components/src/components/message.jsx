@@ -53,6 +53,7 @@ export default function Message(props) {
                 <span>{props.children}</span>
 
         }
+        moment.locale(window.props.settings.language)
         const timestamp = moment(props.datetime).local();
         const [offset, setoffset] = useState(timestamp.fromNow());
 

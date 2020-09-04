@@ -8,6 +8,8 @@
 ## TODO
  - Make uploading users more fault tolerant
  - Add a descrition of file content/requirements
+ - More translations
+ - Dont rerender the full chat page on channel change
 
 ## Installation
 
