@@ -96,6 +96,9 @@ class Class(GetRelatedUserMixin, models.Model):
     students = models.ManyToManyField(Student)
     teachers = models.ManyToManyField(Teacher)
 
+    def getJSON(self):
+        return {"name": self.name, "student-count": self.students.count(), "teacher-count": self.teachers.count()}
+
 
 class Classroom(models.Model):
     """

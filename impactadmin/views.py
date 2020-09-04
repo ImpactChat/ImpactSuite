@@ -24,7 +24,7 @@ from django.views.generic import View
 
 from django_react_views.views import ReactTemplateView
 
-from .models import Student, User
+from .models import Student, User, Class
 
 # pylint: disable=no-member
 student_type = ContentType.objects.get(app_label="impactadmin", model="student")
@@ -42,104 +42,105 @@ types = {
 }
 
 # Note: Table headers are rewritten here to prevent accidental data leakage
-relevant_models = {
-    "models": [
-        {
-            "name": _("students"),
-            "api-name": "student",
-            "count": User.objects.filter(user_role=student_type).count(),
-            "api-link:get": reverse_lazy("impactadmin-api:get"),
-            "download-link": "/administration/download/student",
-            "headers": [
-                {
-                    "actual": "username",
-                    "display": "Username"
-                },
-                {
-                    "actual": "name",
-                    "display": "Full name"
-                },
-                {
-                    "actual": "avatar",
-                    "display": "Avatar"
-                },
-            ]
-        },
-        {
-            "name": _("teachers"),
-            "api-name": "teacher",
-            "count": User.objects.filter(user_role=teacher_type).count(),
-            "api-link:get": reverse_lazy("impactadmin-api:get"),
-            "download-link": "/administration/download/teacher",
-            "headers": [
-                {
-                    "actual": "username",
-                    "display": "Username"
-                },
-                {
-                    "actual": "avatar",
-                    "display": "Avatar"
-                },
-            ]
+def get_relevant_models():
+    return {
+        "models": [
+            {
+                "name": _("students"),
+                "api-name": "student",
+                "count": User.objects.filter(user_role=student_type).count(),
+                "api-link:get": reverse_lazy("impactadmin-api:get"),
+                "download-link": "/administration/download/student",
+                "headers": [
+                    {
+                        "actual": "username",
+                        "display": "Username"
+                    },
+                    {
+                        "actual": "name",
+                        "display": "Full name"
+                    },
+                    {
+                        "actual": "avatar",
+                        "display": "Avatar"
+                    },
+                ]
+            },
+            {
+                "name": _("teachers"),
+                "api-name": "teacher",
+                "count": User.objects.filter(user_role=teacher_type).count(),
+                "api-link:get": reverse_lazy("impactadmin-api:get"),
+                "download-link": "/administration/download/teacher",
+                "headers": [
+                    {
+                        "actual": "username",
+                        "display": "Username"
+                    },
+                    {
+                        "actual": "avatar",
+                        "display": "Avatar"
+                    },
+                ]
 
-        },
-        {
-            "name": _("classes"),
-            "api-name": "class",
-            "count": User.objects.filter(user_role=class_type).count(),
-            "api-link:get": reverse_lazy("impactadmin-api:get"),
-            "download-link": "/administration/download/class",
-            "headers": [
-                {
-                    "actual": "name",
-                    "display": "Name"
-                },
-                {
-                    "actual": "student-count",
-                    "display": "Student Count"
-                },
-                {
-                    "actual": "teacher-count",
-                    "display": "Teacher Count"
-                },
-            ]
-        },
-        {
-            "name": _("parents"),
-            "api-name": "parent",
-            "count": User.objects.filter(user_role=parent_type).count(),
-            "api-link:get": reverse_lazy("impactadmin-api:get"),
-            "download-link": "/administration/download/parent",
-            "headers": [
-                {
-                    "actual": "username",
-                    "display": "Username"
-                },
-                {
-                    "actual": "avatar",
-                    "display": "Avatar"
-                },
-            ]
-        },
-        {
-            "name": _("staff"),
-            "api-name": "staff",
-            "count": User.objects.filter(user_role=staff_type).count(),
-            "api-link:get": reverse_lazy("impactadmin-api:get"),
-            "download-link": "/administration/download/staff",
-            "headers": [
-                {
-                    "actual": "username",
-                    "display": "Username"
-                },
-                {
-                    "actual": "avatar",
-                    "display": "Avatar"
-                },
-            ]
-        },
-    ]
-}
+            },
+            {
+                "name": _("classes"),
+                "api-name": "class",
+                "count": Class.objects.count(),
+                "api-link:get": reverse_lazy("impactadmin-api:get"),
+                "download-link": "/administration/download/class",
+                "headers": [
+                    {
+                        "actual": "name",
+                        "display": "Name"
+                    },
+                    {
+                        "actual": "student-count",
+                        "display": "Student Count"
+                    },
+                    {
+                        "actual": "teacher-count",
+                        "display": "Teacher Count"
+                    },
+                ]
+            },
+            {
+                "name": _("parents"),
+                "api-name": "parent",
+                "count": User.objects.filter(user_role=parent_type).count(),
+                "api-link:get": reverse_lazy("impactadmin-api:get"),
+                "download-link": "/administration/download/parent",
+                "headers": [
+                    {
+                        "actual": "username",
+                        "display": "Username"
+                    },
+                    {
+                        "actual": "avatar",
+                        "display": "Avatar"
+                    },
+                ]
+            },
+            {
+                "name": _("staff"),
+                "api-name": "staff",
+                "count": User.objects.filter(user_role=staff_type).count(),
+                "api-link:get": reverse_lazy("impactadmin-api:get"),
+                "download-link": "/administration/download/staff",
+                "headers": [
+                    {
+                        "actual": "username",
+                        "display": "Username"
+                    },
+                    {
+                        "actual": "avatar",
+                        "display": "Avatar"
+                    },
+                ]
+            },
+        ]
+    }
 
 class CannotSaveUser(Exception):
     pass
@@ -257,7 +258,7 @@ class AdministrationView(LoginRequiredMixin, UserPassesTestMixin, ReactTemplateV
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
         translation.activate(self.request.user.locale)
-        context["props"] = relevant_models
+        context["props"] = get_relevant_models()
         return context
 
 @method_decorator(ensure_csrf_cookie, name="dispatch")
@@ -276,7 +277,7 @@ class AdministrationAdvancedView(LoginRequiredMixin, UserPassesTestMixin, ReactT
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
         translation.activate(self.request.user.locale)
-        context["props"] = relevant_models
+        context["props"] = get_relevant_models()
         return context
 
 
@@ -286,7 +287,11 @@ class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
     Return students as a JSON response, supports pagination
     """
     def get(self, request):
-        qs = User.objects.filter(user_role=types[request.GET.get("type")])
+        qs = None
+        if (request.GET.get("type") == "class"):
+            qs = Class.objects.all()
+        else:
+            qs = User.objects.filter(user_role=types[request.GET.get("type")])
         p = Paginator(qs, request.GET.get("max", 10))
         objects = []
         count = qs.count()
