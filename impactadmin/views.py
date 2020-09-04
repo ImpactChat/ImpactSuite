@@ -1,6 +1,7 @@
 import codecs
 import csv
 from json import loads
+import traceback
 
 import django
 from django.apps import apps
@@ -317,21 +318,32 @@ class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
 
         if t == "student":
             csvfile = csv.DictReader(codecs.iterdecode(f, 'utf-8'))
-            first_name = ['First Name', 'First name']
-            last_name = ['Last Name', 'Last name']
+            first_name = ['First Name', 'First name', 'first_name']
+            last_name = ['Last Name', 'Last name', 'last_name']
             
             for line in csvfile:
-                u = User.objects.create_user(line['Username'], line['Email'], "hello")
+                u = User.objects.create_user(line.get('Username', line.get('username')), line.get('Email', line.get('email')), "hello")
                 s = Student.objects.create()
 
-                for key in line:
-                    if key.lstrip('\ufeff') in first_name:
-                        fname = line[key]
-                        u.first_name = fname
-                    elif key.lstrip('\ufeff') in last_name:
-                        lname = line[key]
-                        u.last_name = lname
 
+                try:
+                    for key in line:
+                        if key is None:
+                            continue
+                        if key.lstrip('\ufeff') in first_name:
+                            fname = line[key]
+                            u.first_name = fname
+                        elif key.lstrip('\ufeff') in last_name:
+                            lname = line[key]
+                            u.last_name = lname
+                except Exception as e:
+                    u.delete()
+                    s.delete()
+                    traceback.print_exc()
+                    return JsonResponse({
+                            "sucess": "no"
+                    })
+ 
                 u.role_data = s
                 u.save()
                 

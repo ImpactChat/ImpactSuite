@@ -108,4 +108,7 @@ class Classroom(models.Model):
 @receiver(pre_delete)
 def delete_related(sender, instance, **kwargs):
     if sender == User:
-        instance.role_data.delete()
+        try:
+            instance.role_data.delete()
+        except:
+            pass

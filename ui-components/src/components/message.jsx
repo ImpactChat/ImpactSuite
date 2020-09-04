@@ -79,7 +79,6 @@ export default function Message(props) {
                             <Grid item>
                                 <Typography variant="subtitle1" style={{display: 'inline-block'}}>{props.username}&nbsp;-&nbsp;</Typography>
                                 <Typography variant="body2" style={{display: 'inline-block'}}>{offset}</Typography>
-
                             </Grid>
                             <Grid item xs className={classes.message}>
                                 <MDRenderer source={message} renderers={renderers} />

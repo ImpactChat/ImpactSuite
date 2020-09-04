@@ -76,11 +76,15 @@ export default function AddNew(props) {
     };
 
     const handleResponse = (res) => {
-        console.log("done")
-        console.log(res);
-        console.log(res.target.response);
-        handleNext();
-    };
+        if (res.currentTarget.status === 500)
+        {
+          handleReset();
+          alert("An error has occured");
+          return 
+        }
+        const obj = JSON.parse(res.target.response);
+        handleNext()
+  }; 
     const [activeStep, setActiveStep] = React.useState(0);
 
     const progressFunction = (evt) => {  
