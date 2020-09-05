@@ -22,7 +22,7 @@ class HomeView(LoginRequiredMixin, View):
                             .first().pk)
         except AttributeError:
             return redirect("impactchat:channel",
-                            channelpk='None')
+                            channelpk=0)
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
@@ -32,17 +32,20 @@ class MessageView(LoginRequiredMixin, ReactTemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
-        if kwargs['channelpk'] == "None":
-            context['props'] = {
-                "selected": None,
-                "channels": None,
-                "messages": None,
-                "channel_pk": None,
-                "can_manage": self.request.user.has_perm(
-                                'impactchat.manage_channels'
-                            )
-            }
-            return context
+        if kwargs['channelpk'] == 0:
+            try:  
+                kwargs['channelpk'] = Channel.objects.filter(visible=True).first().pk
+            except AttributeError:  # No channel visible
+                context['props'] = {
+                    "selected": -1,
+                    "channels": [],
+                    "messages": [],
+                    "channel_pk": -1,
+                    "can_manage": self.request.user.has_perm(
+                                    'impactchat.manage_channels'
+                                )
+                }
+                return context
 
 
 

@@ -77,13 +77,14 @@ const actions = [
 
 // Out of scope because `render` is called multiple times
 // which means duplicate sockets are created
-const roomName = window.props.channel_pk;
+const roomName = window.props.channel_pk !== -1 ? window.props.channel_pk : null
 var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+
 const chatSocket = new ReconnectingWebSocket(
     ws_scheme + '://'
     + window.location.host
     + '/ws/chat/'
-    + roomName
+    + roomName 
     + '/'
 );
 
@@ -107,8 +108,7 @@ class ChatPage extends React.Component {
             channels: window.props.channels
           }
 
-        console.log(roomName)
-        if (roomName === null)
+        if (roomName === null && window.props.channel_pk !== -1)
         {
             window.location.href = window.props.settings.links.chat_app
         }
@@ -188,7 +188,7 @@ class ChatPage extends React.Component {
 
                                     </div>
                                     <div className={classes.Input}>
-                                        <MessageInput socket={chatSocket} />
+                                        {roomName !== null ?  <MessageInput socket={chatSocket} /> : "No channels have been created yet, wait for someone to create one..."}
                                     </div>
 
                             </Grid>

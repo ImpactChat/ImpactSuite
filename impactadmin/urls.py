@@ -31,6 +31,6 @@ urlpatterns = [
 
     path('administration/detail/',   AdministrationAdvancedView.as_view(), name="detail-admin"),
     path('administration/',   AdministrationView.as_view(), name="administration"),
-    path('administration/download/<slug:model>',   DownloadModelsView.as_view(), name="download"),
+    path('administration/download/<int:model>',   DownloadModelsView.as_view(), name="download"),
     path('administration/<slug:class>/<int:pk>',   AdministrationDetailView.as_view(), name="detail-model-admin"),
 ]
