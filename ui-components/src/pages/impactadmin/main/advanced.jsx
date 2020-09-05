@@ -67,7 +67,7 @@ export default function AdminPage(props) {
     // const { t, i18n } = useTranslation();
 
     const [selected, setSelected] = useState(0);
-    const [subSelected, setsubSelected] = useState(0);
+    const [subSelected, setsubSelected] = useState(1);
     const [open, setOpen] = useState(false);
 
     const subOptions = [

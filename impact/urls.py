@@ -27,7 +27,10 @@ try:
 
         path('chat/', include(('impactchat.urls', 'impactchat'),
                             namespace='impactchat')),
+        path('class/', include(('impactclass.urls', 'impactclass'),
+                            namespace='impactclass')),
         
+
         path('api/impactadmin/', include(('impactadmin.urls-api', 'impactadmin'),
                         namespace='impactadmin-api')),
 
