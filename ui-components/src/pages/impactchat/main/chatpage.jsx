@@ -121,7 +121,8 @@ class ChatPage extends React.Component {
 
         chatSocket.onopen = function(e) {
             console.log('Chat socket opened!');
-        };
+            this.props.closeSnackbar();
+        }.bind(this);
         chatSocket.onmessage = function(e) {
               const data = JSON.parse(e.data);
               console.log("Received message from WS:", data);
@@ -155,8 +156,14 @@ class ChatPage extends React.Component {
         }.bind(this);
       
         chatSocket.onclose = function(e) {
-              console.log('Chat socket closed');
-        };
+              console.log('Chat socket closed...');
+              this.props.enqueueSnackbar('No connection!', { 
+                    variant: 'error',
+                    persist: true,
+                    preventDuplicate: true,
+                });
+            
+        }.bind(this);
 
         return (
             <>

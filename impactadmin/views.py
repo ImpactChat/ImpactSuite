@@ -42,6 +42,7 @@ types = {
 }
 
 # Note: Table headers are rewritten here to prevent accidental data leakage
+# Other note: This is a function so it recalculates count every time
 def get_relevant_models():
     return {
         "models": [
@@ -280,6 +281,29 @@ class AdministrationAdvancedView(LoginRequiredMixin, UserPassesTestMixin, ReactT
         context["props"] = get_relevant_models()
         return context
 
+@method_decorator(ensure_csrf_cookie, name="dispatch")
+class AdministrationDetailView(LoginRequiredMixin, UserPassesTestMixin, ReactTemplateView):
+    """
+    Display the administration interface to the user given they are in the
+    a group with the correct permissions to access it
+    """
+
+    template_name = "impactadmin/administration.html"
+    react_component = "advanced.jsx"
+
+    def test_func(self):
+        return can_administer(self.request)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data()
+        model_class = kwargs['class']
+        pk = kwargs['pk']
+        if model_class == "class":
+            pass
+        translation.activate(self.request.user.locale)
+        context["props"] = get_relevant_models()
+        return context
+
 
 @method_decorator(ensure_csrf_cookie, name="dispatch")
 class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -330,7 +354,6 @@ class AdministrationAPIView(LoginRequiredMixin, UserPassesTestMixin, View):
                 u = User.objects.create_user(line.get('Username', line.get('username')), line.get('Email', line.get('email')), "hello")
                 s = Student.objects.create()
 
-
                 try:
                     for key in line:
                         if key is None:
@@ -373,7 +396,7 @@ class DownloadModelsView(LoginRequiredMixin, UserPassesTestMixin, View):
 
         meta = model_class._meta
         field_names = [field.name for field in meta.fields]
-        temp = [field.name for field in meta.fields]
+        temp        = [field.name for field in meta.fields]
 
         user_meta = User._meta
         user_field_names = [field.name for field in user_meta.fields]
@@ -394,3 +417,4 @@ class DownloadModelsView(LoginRequiredMixin, UserPassesTestMixin, View):
             row = writer.writerow(temp)
 
         return response
+
