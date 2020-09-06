@@ -31,6 +31,15 @@ class User(AbstractUser):
         return {"username": self.username, "avatar": "U", "pk": self.pk}
 
 
+    def can_administer(self):
+        teacher_type = ContentType.objects.get(app_label="impactadmin", model="teacher")
+        staff_type = ContentType.objects.get(app_label="impactadmin", model="staff")
+        return (
+            self.user_role == teacher_type or self.user_role == staff_type
+        )
+
+
+
 class GetRelatedUserMixin(object):
     @property
     def user(self):

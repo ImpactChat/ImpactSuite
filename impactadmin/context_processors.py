@@ -16,7 +16,7 @@ def react(request):
                 {
                     "verb": "Learn",
                     "name": "Impact Class",
-                    "link": "a"
+                    "link": str(reverse_lazy("impactclass:home"))
                 },
                 {
                     "verb": "Plan",
@@ -32,4 +32,11 @@ def react(request):
             }
         }
     }
+    if request.user.is_authenticated:
+        if request.user.can_administer():
+            context['settings']['apps'].append({
+                "verb":  "Administer",
+                "name": "Impact Admin",
+                "link": str(reverse_lazy("impactadmin:administration"))
+            })
     return context

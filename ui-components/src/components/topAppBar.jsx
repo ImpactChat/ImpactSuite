@@ -91,9 +91,11 @@ export default function MenuAppBar(props) {
                                 <Paper className={classes.paper} elevation={1}>
                                     <Grid container className={classes.root} spacing={2}>
                                         <Grid item xs={12}>
-                                            <Grid container justify="flex-start" spacing={2}>
+                                            <Grid container justify="flex-start" spacing={1}>
                                                 {window.props.settings.apps.map((value) => (
-                                                    <SmallAppIcon key={value.name} name={value.name} link={value.link}  />
+                                                    <Grid item key={value.name} xs={5}>
+                                                        <SmallAppIcon name={value.name} link={value.link}  />
+                                                    </Grid>
                                                 ))}
                                             </Grid>
                                         </Grid>
