@@ -43,18 +43,22 @@ export default function ProfilePage(props) {
                     Classes you're a  part of
                 </Typography>
             </Container>
-            <Card className={classes.root}>
-                <CardActionArea>
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            Math
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            Teachers: John Doe and Jane Doe
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
+            {
+                window.props.classes.map((val, i) => (
+                    <Card key={val.pk} className={classes.root}>
+                        <CardActionArea>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="h2">
+                                    {val.name}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    Teachers: {val.teachers.map((name, i) => name)}
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+                ))
+            }
         </>
     );
 }

@@ -54,6 +54,8 @@ class Student(GetRelatedUserMixin, models.Model):
     """
     Represents a student in the school
     """
+    def __str__(self):
+        return f"student-{self.user.username if self.user is not None else self.pk}-{self.pk}"
 
     def getJSON(self):
         return {"username": self.user.username, "name": self.user.get_full_name(), "avatar": "U", "pk": self.user.pk} 
@@ -122,5 +124,7 @@ def delete_related(sender, instance, **kwargs):
     if sender == User:
         try:
             instance.role_data.delete()
+            instance.user_role = None
+            instance.save()
         except:
             pass
