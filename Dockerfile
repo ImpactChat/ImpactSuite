@@ -17,5 +17,6 @@ RUN npm run build
 
 RUN apt-get update && apt-get install -y gettext
 
+EXPOSE 5000
 
 CMD [ "python", "manage.py", "start" ]
