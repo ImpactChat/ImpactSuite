@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         execute_from_command_line(('manage.py', 'compilemessages'))
-        execute_from_command_line(('manage.py', 'collectstatic'))
+        execute_from_command_line(('manage.py', 'collectstatic --no-input'))
         execute_from_command_line(('manage.py', 'migrate'))
 
         if User.objects.count() == 0:
