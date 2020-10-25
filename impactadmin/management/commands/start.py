@@ -1,4 +1,5 @@
 import sys
+import os
 
 from django.core.management import execute_from_command_line
 from ...models import User
@@ -26,6 +27,4 @@ class Command(BaseCommand):
             Channel.objects.create(name='Channel1')
 
 
-
-
-        execute_from_command_line(('manage.py', 'runserver', '0.0.0.0:8000'))
+        execute_from_command_line(('manage.py', 'runserver', f'0.0.0.0:{os.environ.get("PORT", 8000)}'))
