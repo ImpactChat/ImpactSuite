@@ -197,6 +197,12 @@ CHANNEL_LAYERS = {
         },
     },
 }
+print("="*20)
+print(os.environ)
+print(os.environ.get("REDIS_URL", None))
+print("="*20)
+
+
 
 LOCALE_PATHS = BASE_DIR / "locale",
 LANGUAGES = [
