@@ -122,7 +122,8 @@ if (os.environ.get("RUNNING_DOCKER", None) is not None):
 print(os.environ.get("DATABASE_URL", None))
 if (os.environ.get("DATABASE_URL", None) is not None):
     DATABASES['default'] = dj_database_url.config(ssl_require=True) 
-
+DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
+print(DATABASES)
 
 if 'test' in sys.argv:
     DATABASES['default'] = {
