@@ -125,6 +125,7 @@ if (os.environ.get("DATABASE_URL", None) is not None):
 DATABASES['default'] = dj_database_url.parse("postgres://postgres:349364c30c4780cddaa85359fc699010@dokku-postgres-impactdb:5432/impactdb", ssl_require=True, engine="django.db.backends.postgresql")
 print("="*20)
 print(DATABASES)
+print(os.environ)
 print(os.environ.get("DATABASE_URL", None))
 print("="*20)
 
