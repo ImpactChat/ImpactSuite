@@ -125,6 +125,8 @@ if (os.environ.get("DATABASE_URL", None) is not None):
 print(DATABASES)
 print(os.environ)
 
+DATABASES['default']['PASSWORD'] = '625c99212091a5bbaec747e45d92af95'
+
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
