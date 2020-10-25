@@ -4,7 +4,6 @@ ENV PYTHONUNBUFFERED 1
 ENV IMPACT_SECRET_KEY "<SECRET_KEY>"
 # ENV RUNNING_DOCKER true
 ENV REDIS_URL "redis://redis:6379"
-ENV DATABASE_URL ${DATABASE_URL}
 
 RUN mkdir /code
 WORKDIR /code
@@ -18,8 +17,5 @@ RUN npm run build
 
 RUN apt-get update && apt-get install -y gettext
 
-
-RUN python manage.py compilemessages
-RUN python manage.py collectstatic
 
 CMD [ "python", "manage.py", "start" ]

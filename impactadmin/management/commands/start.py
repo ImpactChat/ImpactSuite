@@ -11,6 +11,8 @@ class Command(BaseCommand):
     help = 'Migrate then start the server'
 
     def handle(self, *args, **options):
+        execute_from_command_line(('manage.py', 'compilemessages'))
+        execute_from_command_line(('manage.py', 'collectstatic'))
         execute_from_command_line(('manage.py', 'migrate'))
 
         if User.objects.count() == 0:
