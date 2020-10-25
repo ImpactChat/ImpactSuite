@@ -125,6 +125,7 @@ if (os.environ.get("DATABASE_URL", None) is not None):
 
 print("="*20)
 print(DATABASES)
+print(os.environ.get("DATABASE_URL", None))
 print("="*20)
 
 
