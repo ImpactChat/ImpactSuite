@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get("IMPACT_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.14', 'impact-suite.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.14', 'impact-suite.herokuapp.com', 'impact-suite.tommcn.mcnamer.ca']
 
 # Application definition
 
