@@ -122,9 +122,6 @@ if (os.environ.get("RUNNING_DOCKER", None) is not None):
 if (os.environ.get("DATABASE_URL", None) is not None):
     DATABASES['default'] = dj_database_url.parse(os.environ.get("DATABASE_URL", None), ssl_require=True, engine="django.db.backends.postgresql")
 
-print(DATABASES)
-print(os.environ)
-
 DATABASES['default']['PASSWORD'] = '625c99212091a5bbaec747e45d92af95'
 
 if 'test' in sys.argv:
