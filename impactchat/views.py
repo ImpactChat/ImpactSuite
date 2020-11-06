@@ -11,6 +11,20 @@ from django_react_views.views import ReactTemplateView
 
 from .models import Channel
 
+from rest_framework import viewsets
+from rest_framework import permissions
+from .serializers import ChannelSerializer
+
+
+class ChannelViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Channel.objects.filter(visible=True).order_by('name')
+    serializer_class = ChannelSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
 
 # pylint: disable=no-member
 # Create your views here.

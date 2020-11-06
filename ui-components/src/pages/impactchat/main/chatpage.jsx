@@ -88,6 +88,7 @@ const chatSocket = new ReconnectingWebSocket(
     + '/'
 );
 
+
 class ChatPage extends React.Component {
     scrollToBottom = () => {
         this.messagesEnd.scrollIntoView(false);

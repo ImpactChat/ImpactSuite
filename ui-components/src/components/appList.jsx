@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import AppIcon from './appIcon.jsx';
 
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import '../i18n/i18n.js';
 
 const useStyles = makeStyles((theme) => ({

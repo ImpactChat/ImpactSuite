@@ -60,14 +60,14 @@
                 "default",
                 "file"
             ],
-            "level": "DEBUG"
+            "level": "INFO"
         },
         "daphne.ws_protocol": {
             "handlers": [
                 "default",
                 "file"
             ],
-            "level": "DEBUG"
+            "level": "WARNING"
         },
         "django.channels.server": {
             "handlers": [

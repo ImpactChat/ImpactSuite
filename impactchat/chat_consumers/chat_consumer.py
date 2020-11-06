@@ -26,11 +26,11 @@ class ChatConsumerMethods():
         }))
 
     @database_sync_to_async
-    def createMessage(self, channel_pk, message):
+    def createMessage(self, channel_pk, message, author):
         channel_obj = Channel.objects.get(pk=channel_pk)  # get_or_create?
         m = Message.objects.create(channel=channel_obj,
                                    content=message,
-                                   author=self.scope['user'])
+                                   author=author)
         return m
 
     @database_sync_to_async

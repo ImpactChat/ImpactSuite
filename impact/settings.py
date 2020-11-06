@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'impactclass',
 
     'jazzmin',
+    'channels',
+    'corsheaders',
+    'rest_framework',
+
+    'django_react_views',
 
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -51,14 +56,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'channels',
 
-    'django_react_views'
 ]
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
 
     'impactadmin.middleware.CustomWhiteNoiseMiddleware',
 
@@ -208,3 +213,21 @@ os.makedirs(BASE_DIR / "logs", exist_ok=True)
 JAZZMIN_SETTINGS = {
     'user_avatar': False
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+    "http://127.0.0.1:8888",
+    "http://localhost:8888",
+    "http://localhost:8888",
+    "app://."
+]
+
+# CORS_ORIGIN_ALLOW_ALL = True

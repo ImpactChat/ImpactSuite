@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      minWidth: 250,
+      minWidth: 200,
       margin: theme.spacing(2)
     },
     title: {

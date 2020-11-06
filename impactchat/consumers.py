@@ -2,12 +2,17 @@ import json
 import logging
 # pylint: disable=import-error
 from channels.generic.websocket import AsyncWebsocketConsumer
+import django
 from channels.db import database_sync_to_async
 from django.utils import translation
+from django.conf import settings
+from asgiref.sync import sync_to_async
 
-import django
+import jwt
+
 # from pprint import pprint
 from .models import Message, Channel
+from impactadmin.models import User
 
 from .chat_consumers.notification_helper import NotificationProvider
 from .chat_consumers.chat_consumer import ChatConsumerMethods
@@ -52,7 +57,7 @@ class ChatConsumer(AsyncWebsocketConsumer, ChatConsumerMethods):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        translation.activate(self.scope['user'].locale)
+        # translation.activate(self.scope['user'].locale)
 
         data = json.loads(text_data)
         # get type of message (sent by client)
@@ -62,18 +67,24 @@ class ChatConsumer(AsyncWebsocketConsumer, ChatConsumerMethods):
         if etype == 'chat.new':
             message = data['message']
             channel = data['channel']
+            author = self.scope['user']
+            if (self.scope['user'].is_anonymous):
+                token = data['token']
+                info = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+                author = await sync_to_async(User.objects.get)(pk=info['user_id'])
 
             log.info(f"Handling message `{message}` from channel `{channel}`")
 
-            # Create messageand then send notification to clients listening
-            m = await self.createMessage(channel, message)
+            # Create message and then send notification to clients listening
+
+            m = await self.createMessage(channel, message, author)
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     'type': 'chat.new',
                     'message': message,
                     'channel': channel,
-                    'm': m.getJSON()
+                    'm': m.getJSON(),
                 }
             )
         # new channel created
