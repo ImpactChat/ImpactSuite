@@ -16,7 +16,7 @@ coverage==5.2.1
 cryptography==3.3.2
 daphne==2.5.0
 dj-database-url==0.5.0
-Django==3.1
+Django==3.1.6
 django-cors-headers==3.5.0
 django-heroku==0.3.1
 django-jazzmin==2.2.7
