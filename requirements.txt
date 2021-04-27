@@ -4,7 +4,7 @@ asgiref==3.2.10
 astroid==2.4.2
 async-timeout==3.0.1
 attrs==20.1.0
-autobahn==20.7.1
+autobahn==20.12.3
 Automat==20.2.0
 black==20.8b1
 cffi==1.14.2
