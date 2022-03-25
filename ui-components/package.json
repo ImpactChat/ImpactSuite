@@ -82,7 +82,7 @@
     "@storybook/storybook-deployer": "^2.8.6",
     "babel-loader": "^8.1.0",
     "babel-plugin-i18next-extract": "^0.7.2",
-    "electron": "^9.2.0",
+    "electron": "^13.6.6",
     "storybook-addon-material-ui": "^0.9.0-alpha.21",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
